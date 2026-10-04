@@ -2,16 +2,18 @@
 
 Valores de referencia iniciales para **autos / asesores en Guayaquil y Quito, destino WhatsApp**, tomados de las cuentas reales de 4R (ver `trafficker/cuentas/`). Actualízalos cada mes con `/meta-ads-auditoria` — los números propios mandan sobre cualquier benchmark genérico.
 
-## Benchmarks propios (base: JTM Nelly, últimos 90 días a oct-2026)
+## Benchmarks propios (portafolio 4R, 16 cuentas con gasto, semana al 2026-10-04)
+Fuente: `bitacora/2026-10-04-auditoria-portafolio.md` + 90 días de JTM Nelly.
+
 | Métrica | Malo | Normal | Bueno |
 |---|---|---|---|
-| CPM (USD) | > 9 | 4 – 7 | < 4,5 |
-| CTR (todos) | < 2% | 2,5 – 3,5% | > 3,5% |
-| Costo por conversación WA | > 1,80 | 0,90 – 1,50 | < 0,85 |
-| Costo por lead formulario | > 4,00 | 2,00 – 3,50 | < 2,20 |
+| CPM WhatsApp (USD) | > 7 | 3 – 6 | < 3,5 |
+| CTR (todos) | < 2% | 2,5 – 4% | > 4,5% |
+| Costo por conversación WA | > 1,50 | 0,60 – 1,20 | < 0,50 |
+| Costo por lead formulario | > 2,00 | 0,60 – 1,20 | < 0,60 |
 | Frecuencia 7 días | > 3,5 | 1,5 – 2,5 | — |
 
-Objetivo por defecto si el cliente no tiene histórico: **CPR objetivo = USD 1,00 por conversación WhatsApp** y **USD 2,50 por lead de formulario**.
+Objetivo por defecto si el cliente no tiene histórico: **CPR objetivo = USD 0,80 por conversación WhatsApp** y **USD 1,00 por lead de formulario**. Los leads de formulario muy baratos (< USD 0,60) suelen ser de menor intención: se validan con la tasa de calificación antes de escalar.
 
 ## Significancia: cuándo se puede decidir
 No se decide nada sobre un anuncio hasta que cumpla **al menos una**:

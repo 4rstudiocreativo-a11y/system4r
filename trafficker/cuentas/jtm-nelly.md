@@ -4,7 +4,7 @@
 - **Marca / modelos:** Jetour (X50, X70, G700, Dashing como comparativo)
 - **Ciudad y radio:** Guayaquil
 - **Presupuesto aprobado:** _(pendiente de confirmar con Kevin)_
-- **CPR objetivo:** USD 0,85 por conversación WA · USD 2,20 por lead de formulario
+- **CPR objetivo:** USD 0,80 por conversación WA · USD 2,20 por lead de formulario (formulario de esta cuenta es más caro que el promedio del portafolio)
 - **Opportunity Score de Meta:** 100/100 (2026-10-04) — Meta no tiene recomendaciones pendientes.
 
 ## Auditoría 2026-10-04 (últimos 90 días)
@@ -34,3 +34,4 @@
 | Fecha | Decisión | Motivo (números) | Resultado a 7 días |
 |---|---|---|---|
 | 2026-10-04 | Auditoría inicial; propuesta de consolidar | 24 campañas / USD 270 en 90 días | — |
+| 2026-10-04 | Única campaña activa (009, id 52514920454975) no gasta en 7 días | USD 0 con presupuesto de USD 3,50/día | — |
