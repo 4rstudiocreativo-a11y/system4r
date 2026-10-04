@@ -76,6 +76,11 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,button:focus-vis
 tr.grp td{background:var(--sunken);font-weight:600}
 tr.cli td{background:var(--accent-soft);font-weight:700}
 td.ind{padding-left:28px}
+td.ind2{padding-left:48px;max-width:420px;overflow:hidden;text-overflow:ellipsis;font-size:13px}
+tr.acc td{font-weight:600}
+tr.camp td{font-size:13px}
+.vpill{display:inline-block;padding:3px 9px;border-radius:999px;font-size:12px;font-weight:600;background:var(--sunken);color:var(--muted)}
+.vpill.ok{background:var(--ok-soft);color:var(--ok)} .vpill.warn{background:var(--warn-soft);color:var(--warn)} .vpill.bad{background:var(--bad-soft);color:var(--bad)}
 .chips{display:flex;flex-wrap:wrap;gap:8px}
 .chip{padding:7px 12px;border-radius:999px;border:1px solid var(--line);background:var(--bg);font:500 14px var(--body);color:var(--fg);cursor:pointer}
 .chip[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
@@ -136,11 +141,12 @@ td.num{text-align:right;font-family:var(--mono);font-variant-numeric:tabular-num
   <section id="view-perf" hidden>
     <div class="panel">
       <div class="actions">
-        <div><h2>Rendimiento de los últimos 7 días</h2><p class="muted">Campañas activas por cliente › sede › marca, con subtotales. Los totales de cada cliente no incluyen las cuentas de awareness. Verde: costo por resultado de USD 0,80 o menos · Amarillo: hasta USD 1,44 · Rojo: más de USD 1,44.</p></div>
+        <div><h2>Rendimiento de los últimos 7 días</h2><p class="muted">Cada pauta activa, debajo de su cliente, sede, marca y asesor, con la decisión según las reglas 4R. Objetivo: USD 0,80 por conversación de WhatsApp y USD 1,00 por lead de formulario. Los totales del cliente no incluyen las cuentas de awareness.</p></div>
         <button class="btn primary" id="perf-load">Cargar todas las cuentas</button>
       </div>
+      <div class="row" style="gap:20px;flex:0 0 auto"><label class="check" style="flex:0 0 auto"><input type="checkbox" id="perf-only"><span>Solo pautas que necesitan acción</span></label><label class="check" style="flex:0 0 auto"><input type="checkbox" id="perf-zero" checked><span>Ocultar pautas sin gasto</span></label></div>
       <div id="perf-status" class="muted"></div>
-      <div class="tablewrap"><table><thead><tr><th>Cliente / cuenta</th><th style="text-align:right">Campañas activas</th><th style="text-align:right">Gasto USD</th><th style="text-align:right">Resultados</th><th style="text-align:right">Costo por resultado</th><th>Peor campaña</th></tr></thead><tbody id="perf-body"><tr><td colspan="6" class="muted">Presiona “Cargar todas las cuentas” para ver el resumen.</td></tr></tbody></table></div>
+      <div class="tablewrap"><table><thead><tr><th>Cliente › asesor › pauta</th><th style="text-align:right">Presupuesto/día</th><th style="text-align:right">Gasto 7 días</th><th style="text-align:right">Resultados</th><th style="text-align:right">Costo por resultado</th><th>Decisión</th></tr></thead><tbody id="perf-body"><tr><td colspan="6" class="muted">Presiona “Cargar todas las cuentas” para ver el resumen.</td></tr></tbody></table></div>
     </div>
   </section>
 
@@ -594,60 +600,86 @@ function renderHist(){
 }
 
 /* ---------- Rendimiento ---------- */
+// Reglas 4R (trafficker/conocimiento/02-metricas-y-reglas.md), sobre los últimos 7 días.
+const TARGET={wa:0.80, form:1.00};
+function kindOf(e){ const ind=String(e.results&&e.results.indicator||""); if(/reach|impressions/i.test(ind)) return "aw"; if(/leadgen|lead/i.test(ind)) return "form"; if(/messaging|conversation/i.test(ind)) return "wa"; return "otro"; }
+function verdict(c, accId){
+  if(AW.has(accId)||c.kind==="aw") return {k:"aw",t:"Awareness: medir por alcance"};
+  if(c.spend<=0) return {k:"zero",t:"Sin gasto: revisar o pausar"};
+  const T=TARGET[c.kind]||TARGET.wa;
+  if(c.res===0) return c.spend>=2.5*T ? {k:"off",t:`Apagar: USD ${money(c.spend)} sin resultados`} : {k:"wait",t:"Esperar: pocos datos"};
+  if(c.res<5 && c.spend<2*T) return {k:"wait",t:"Esperar: pocos datos"};
+  if(c.cpr>1.8*T && c.res>=5) return {k:"off",t:`Apagar o cambiar creativo (objetivo USD ${money(T)})`};
+  if(c.cpr>1.3*T) return {k:"down",t:"Bajar 20% y renovar creativos"};
+  if(c.cpr>T) return {k:"watch",t:"Mantener y vigilar"};
+  if(c.budget && c.spend>=c.budget*7*0.85 && c.cpr<=0.8*T) return {k:"up",t:`Escalar +20% (USD ${money(c.budget)} → ${money(c.budget*1.2)})`};
+  return {k:"ok",t:"Mantener"};
+}
+const VCLS={off:"bad",down:"warn",watch:"warn",wait:"",ok:"ok",up:"ok",zero:"",aw:""};
+let PERF=null;
 async function loadPerf(){
-  const btn=$("#perf-load"), st=$("#perf-status"), body=$("#perf-body");
+  const btn=$("#perf-load"), st=$("#perf-status");
   const accs=S.accounts.filter(a=>a.is_queryable && a.is_ads_mcp_enabled && a.account_status==="ACTIVE");
   if(!accs.length){ st.textContent="No hay cuentas para revisar."; return; }
-  btn.disabled=true; const rows=[]; let done=0;
-  const draw=()=>{
-    const sevOf=r=>r.aw?"n":r.err?"n":(r.cpr==null?"n":r.cpr<=0.8?"g":r.cpr<=1.44?"y":"r");
-    const row=r=>`<tr><td class="ind"><span class="sev ${sevOf(r)}"></span>${esc(r.name)}</td><td class="num">${r.err?"—":r.n}</td><td class="num">${r.err?"—":money(r.spend)}</td><td class="num">${r.err?"—":r.res}</td><td class="num">${AW.has(r.id)?"alcance":(r.cpr==null?"—":money(r.cpr))}</td><td>${r.err?`<span class="muted">${esc(r.err)}</span>`:(r.worst?esc(r.worst):"")}</td></tr>`;
-    const tot=all=>{const allAw=all.every(r=>AW.has(r.id)); const list=allAw?all:all.filter(r=>!AW.has(r.id)); if(allAw) return {aw:true,spend:all.reduce((a,r)=>a+(r.spend||0),0),res:"—",cpr:null,n:all.reduce((a,r)=>a+(r.n||0),0)}; const sp=list.reduce((a,r)=>a+(r.spend||0),0), rs=list.reduce((a,r)=>a+(r.res||0),0); return {spend:sp,res:rs,cpr:rs?sp/rs:null,n:list.reduce((a,r)=>a+(r.n||0),0)};};
-    const sumRow=(cls,label,t)=>`<tr class="${cls}"><td><span class="sev ${sevOf(t)}"></span>${label}</td><td class="num">${t.n}</td><td class="num">${money(t.spend)}</td><td class="num">${t.res}</td><td class="num">${t.aw?"alcance":(t.cpr==null?"—":money(t.cpr))}</td><td>${t.aw?'<span class="muted">Awareness: se mide por alcance, no por costo por conversación</span>':""}</td></tr>`;
-    let html="";
-    [...CLIENTS,"Otros clientes"].forEach(cli=>{
-      const cr=rows.filter(r=>pathOf(r.id)[0]===cli); if(!cr.length) return;
-      html+=sumRow("cli",esc(cli),tot(cr));
-      const subs=new Map(); cr.forEach(r=>{const k=pathOf(r.id).slice(1).join(" › "); if(!subs.has(k)) subs.set(k,[]); subs.get(k).push(r);});
-      const order=PORTFOLIO.map(g=>g.path.slice(1).join(" › "));
-      [...subs.entries()].sort((a,b)=>order.indexOf(a[0])-order.indexOf(b[0])).forEach(([k,list])=>{
-        if(k && subs.size>1) html+=sumRow("grp",esc(k),tot(list));
-        list.sort((x,y)=>y.spend-x.spend).forEach(r=>{html+=row(r);});
-      });
-    });
-    body.innerHTML=html;
-    st.innerHTML=done<accs.length?`<span class="spin"></span> Revisadas ${done} de ${accs.length} cuentas…`:`Revisadas ${accs.length} cuentas · Gasto total: USD <b class="mono">${money(rows.reduce((s,r)=>s+r.spend,0))}</b>`;
-  };
-  draw();
+  btn.disabled=true; PERF={rows:[],done:0,total:accs.length};
+  drawPerf();
   const queue=accs.slice();
   async function worker(){
     while(queue.length){
       const a=queue.shift();
       try{
-        const p=await meta("ads_get_ad_entities",{ad_account_id:a.ad_account_id,level:"campaign",date_preset:"last_7d",fields:["id","name","effective_status","amount_spent","results","cost_per_result"],
-          filtering:[{field:"campaign.effective_status",operator:"IN",value:["ACTIVE"]}],include_additional_context:false,advertiser_request:"ver cómo van las pautas"});
-        const ents=arr(p,["ad_entities"]);
-        let spend=0,res=0,worst=null,worstC=0;
-        ents.forEach(e=>{
-          const s=parseFloat(e.amount_spent&&e.amount_spent.value)||0; spend+=s;
-          const rv=e.results&&e.results.values&&e.results.values[0]?parseFloat(e.results.values[0].value)||0:0; res+=rv;
-          const cpr=parseFloat(e.cost_per_result&&e.cost_per_result.value);
-          if(!isNaN(cpr)&&rv>=5&&cpr>worstC){ worstC=cpr; worst=`${e.name} · USD ${money(cpr)}`; }
+        const p=await meta("ads_get_ad_entities",{ad_account_id:a.ad_account_id,level:"campaign",date_preset:"last_7d",fields:["id","name","effective_status","daily_budget","amount_spent","results","cost_per_result"],
+          filtering:[{field:"campaign.effective_status",operator:"IN",value:["ACTIVE"]}],include_additional_context:false,advertiser_request:"ver el rendimiento de cada pauta activa para ver si se baja o no"});
+        const camps=arr(p,["ad_entities"]).map(e=>{
+          const spend=parseFloat(e.amount_spent&&e.amount_spent.value)||0;
+          const res=e.results&&e.results.values&&e.results.values[0]?parseFloat(e.results.values[0].value)||0:0;
+          const c={id:String(e.id),name:e.name,spend,res,cpr:res?spend/res:null,budget:parseFloat(e.daily_budget&&e.daily_budget.value)||null,kind:kindOf(e)};
+          c.v=verdict(c,a.ad_account_id); return c;
         });
-        if(ents.length) rows.push({id:a.ad_account_id,name:a.ad_account_name,n:ents.length,spend,res,cpr:res?spend/res:null,worst:worstC>1.44?worst:""});
-      }catch(e){ rows.push({id:a.ad_account_id,name:a.ad_account_name,spend:0,err:errText(e)}); }
-      done++; draw();
+        if(camps.length) PERF.rows.push({id:a.ad_account_id,name:a.ad_account_name,camps});
+      }catch(e){ PERF.rows.push({id:a.ad_account_id,name:a.ad_account_name,camps:[],err:errText(e)}); }
+      PERF.done++; drawPerf();
     }
   }
   await Promise.all([worker(),worker(),worker()]);
-  if(!rows.length) body.innerHTML=`<tr><td colspan="6" class="muted">Ninguna cuenta tiene campañas activas esta semana.</td></tr>`;
-  btn.disabled=false; btn.textContent="Actualizar";
+  btn.disabled=false; btn.textContent="Actualizar"; drawPerf();
+}
+function drawPerf(){
+  const body=$("#perf-body"), st=$("#perf-status"); if(!PERF) return;
+  const onlyAct=$("#perf-only").checked, hideZero=$("#perf-zero").checked;
+  const show=c=> (!hideZero||c.spend>0) && (!onlyAct||["off","down","up","zero"].includes(c.v.k));
+  const sum=(camps,accId)=>{ const cc=camps.filter(c=>!(AW.has(accId)||c.kind==="aw")); const sp=cc.reduce((a,c)=>a+c.spend,0), rs=cc.reduce((a,c)=>a+c.res,0), bd=camps.reduce((a,c)=>a+(c.budget||0),0); return {sp,rs,bd,cpr:rs?sp/rs:null,aw:cc.length===0}; };
+  const counts=camps=>{ const n={off:0,down:0,up:0,zero:0}; camps.forEach(c=>{ if(n[c.v.k]!=null) n[c.v.k]++; }); return [n.off&&`${n.off} apagar`,n.down&&`${n.down} bajar`,n.up&&`${n.up} escalar`,n.zero&&`${n.zero} sin gasto`].filter(Boolean).join(" · ")||"Todo en orden"; };
+  const tr=(cls,name,t,dec,ind)=>`<tr class="${cls}"><td class="${ind||""}">${name}</td><td class="num">${t.bd?money(t.bd):"—"}</td><td class="num">${money(t.sp)}</td><td class="num">${t.aw?"—":t.rs}</td><td class="num">${t.aw?"alcance":(t.cpr==null?"—":money(t.cpr))}</td><td>${dec}</td></tr>`;
+  let html="";
+  [...CLIENTS,"Otros clientes"].forEach(cli=>{
+    const rows=PERF.rows.filter(r=>pathOf(r.id)[0]===cli); if(!rows.length) return;
+    const allC=rows.flatMap(r=>r.camps.map(c=>({...c,acc:r.id})));
+    const cs=sum(allC.filter(c=>!AW.has(c.acc)),"");
+    html+=tr("cli",esc(cli),cs,esc(counts(allC)));
+    const subs=new Map(); rows.forEach(r=>{const k=pathOf(r.id).slice(1).join(" › "); if(!subs.has(k)) subs.set(k,[]); subs.get(k).push(r);});
+    const order=PORTFOLIO.map(g=>g.path.slice(1).join(" › "));
+    [...subs.entries()].sort((x,y)=>order.indexOf(x[0])-order.indexOf(y[0])).forEach(([k,list])=>{
+      if(k){ const gc=list.flatMap(r=>r.camps.map(c=>({...c,acc:r.id}))); const awG=list.every(r=>AW.has(r.id)); const t=sum(awG?gc:gc.filter(c=>!AW.has(c.acc)),awG?list[0].id:""); html+=tr("grp",esc(k),t,esc(counts(gc))); }
+      list.sort((x,y)=>sum(y.camps,y.id).sp-sum(x.camps,x.id).sp).forEach(r=>{
+        if(r.err){ html+=`<tr class="acc"><td class="ind">${esc(r.name)}</td><td colspan="5" class="muted">${esc(r.err)}</td></tr>`; return; }
+        html+=tr("acc",esc(r.name),sum(r.camps,r.id),esc(counts(r.camps)),"ind");
+        r.camps.filter(show).sort((x,y)=>y.spend-x.spend).forEach(c=>{
+          html+=`<tr class="camp"><td class="ind2" title="${esc(c.name)}">${esc(c.name)} <span class="id">${c.kind==="form"?"formulario":c.kind==="wa"?"WhatsApp":c.kind==="aw"?"alcance":""}</span></td><td class="num">${c.budget?money(c.budget):"—"}</td><td class="num">${money(c.spend)}</td><td class="num">${c.kind==="aw"?"—":c.res}</td><td class="num">${c.kind==="aw"||AW.has(r.id)?"alcance":(c.cpr==null?"—":money(c.cpr))}</td><td><span class="vpill ${VCLS[c.v.k]}">${esc(c.v.t)}</span></td></tr>`;
+        });
+      });
+    });
+  });
+  body.innerHTML=html||`<tr><td colspan="6" class="muted">${PERF.done<PERF.total?"Cargando…":"Ninguna cuenta tiene campañas activas esta semana."}</td></tr>`;
+  const all=PERF.rows.flatMap(r=>r.camps); const tot=all.reduce((a,c)=>a+c.spend,0);
+  st.innerHTML=PERF.done<PERF.total?`<span class="spin"></span> Revisadas ${PERF.done} de ${PERF.total} cuentas…`:`Revisadas ${PERF.total} cuentas · ${all.length} campañas activas · Gasto 7 días: USD <b class="mono">${money(tot)}</b> · ${esc(counts(all))}`;
 }
 
 /* ---------- Tabs ---------- */
 const tabs={new:"#view-new",perf:"#view-perf",hist:"#view-hist"};
 Object.keys(tabs).forEach(k=>{ $("#tab-"+k).onclick=()=>{ Object.entries(tabs).forEach(([kk,sel])=>{ $(sel).hidden=kk!==k; $("#tab-"+kk).setAttribute("aria-selected",kk===k); }); if(k==="hist") renderHist(); try{localStorage.setItem("4r-tab",k)}catch(e){} }; });
 $("#perf-load").onclick=loadPerf;
+$("#perf-only").onchange=drawPerf; $("#perf-zero").onchange=drawPerf;
 
 boot();
 })();
