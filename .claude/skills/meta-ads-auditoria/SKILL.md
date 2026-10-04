@@ -8,7 +8,7 @@ description: Audita una cuenta de Meta Ads de un cliente de 4R con datos reales 
 Esta skill **no modifica nada** en la cuenta. Solo lee y propone.
 
 ## Pasos
-1. **Identificar la cuenta.** Buscar en `trafficker/cuentas/_indice.md`. Si no está, `ads_get_ad_accounts` y buscar por nombre. Verificar `is_queryable`, `is_ads_mcp_enabled`, `account_status`, `has_payment_method`. Si hay problema → reportarlo primero (ver `conocimiento/05-seguridad-cuentas.md`).
+1. **Identificar la cuenta.** Buscar en `trafficker/portafolio.json` (cliente › sede › marca › cuenta). Si no está, `ads_get_ad_accounts` y buscar por nombre. Verificar `is_queryable`, `is_ads_mcp_enabled`, `account_status`, `has_payment_method`. Si hay problema → reportarlo primero (ver `conocimiento/05-seguridad-cuentas.md`).
 2. **Leer contexto:** ficha del cliente en `trafficker/cuentas/` + `conocimiento/02-metricas-y-reglas.md`.
 3. **Extraer datos** con `ads_get_ad_entities`:
    - Nivel `campaign`, `last_90d`, campos: `id, name, effective_status, amount_spent, results, cost_per_result, impressions, cpm, ctr`.
@@ -35,7 +35,7 @@ gasto · resultados · CPR medio · mejor/peor campaña
 ### Próximos pasos
 ```
 
-6. **Guardar:** actualizar/crear la ficha `trafficker/cuentas/<cliente>.md` (sección Auditoría + Aprendizajes + Historial) y añadir ganadores a `bitacora/creativos-ganadores.md`. Si los benchmarks propios difieren mucho de `02-metricas-y-reglas.md`, proponer actualizarlos.
+6. **Guardar:** actualizar/crear la ficha `trafficker/cuentas/<cliente>/<sede>/<marca>/<asesor>.md` (clientes de una sola sede: `trafficker/cuentas/<cliente>/<asesor>.md`) (sección Auditoría + Aprendizajes + Historial) y añadir ganadores a `bitacora/creativos-ganadores.md`. Si los benchmarks propios difieren mucho de `02-metricas-y-reglas.md`, proponer actualizarlos.
 
 ## Auditoría de portafolio
-Si Kevin pide "audita todas" o "cómo va la agencia": recorrer las cuentas ✅ del índice a nivel `ad_account`, `last_7d`, y entregar una tabla ordenada por gasto con CPR y una columna "atención" (🟢/🟡/🔴) según las reglas. Profundizar solo en las 🔴.
+Si Kevin pide "audita todas" o "cómo va la agencia": recorrer las cuentas de `trafficker/portafolio.json` (o solo el cliente/sede/marca pedido), `last_7d`, y entregar una tabla agrupada por cliente › sede › marca con subtotales con CPR y una columna "atención" (🟢/🟡/🔴) según las reglas. Profundizar solo en las 🔴.

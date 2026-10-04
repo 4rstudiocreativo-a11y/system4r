@@ -72,6 +72,10 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,button:focus-vis
 .list button:hover{background:var(--sunken)}
 .list button[aria-pressed="true"]{background:var(--accent-soft)}
 .list .id{font:500 12px var(--mono);color:var(--muted)}
+.ghead{position:sticky;top:0;z-index:1;padding:8px 14px;background:var(--sunken);border-bottom:1px solid var(--line);font-size:12px;font-weight:600;letter-spacing:.04em;text-transform:uppercase}
+tr.grp td{background:var(--sunken);font-weight:600}
+tr.cli td{background:var(--accent-soft);font-weight:700}
+td.ind{padding-left:28px}
 .chips{display:flex;flex-wrap:wrap;gap:8px}
 .chip{padding:7px 12px;border-radius:999px;border:1px solid var(--line);background:var(--bg);font:500 14px var(--body);color:var(--fg);cursor:pointer}
 .chip[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
@@ -132,11 +136,11 @@ td.num{text-align:right;font-family:var(--mono);font-variant-numeric:tabular-num
   <section id="view-perf" hidden>
     <div class="panel">
       <div class="actions">
-        <div><h2>Rendimiento de los últimos 7 días</h2><p class="muted">Campañas activas por cuenta. Verde: costo por resultado de USD 0,80 o menos · Amarillo: hasta USD 1,44 · Rojo: más de USD 1,44.</p></div>
+        <div><h2>Rendimiento de los últimos 7 días</h2><p class="muted">Campañas activas por cliente › sede › marca, con subtotales. Verde: costo por resultado de USD 0,80 o menos · Amarillo: hasta USD 1,44 · Rojo: más de USD 1,44.</p></div>
         <button class="btn primary" id="perf-load">Cargar todas las cuentas</button>
       </div>
       <div id="perf-status" class="muted"></div>
-      <div class="tablewrap"><table><thead><tr><th>Cuenta</th><th>Campañas activas</th><th style="text-align:right">Gasto USD</th><th style="text-align:right">Resultados</th><th style="text-align:right">Costo por resultado</th><th>Peor campaña</th></tr></thead><tbody id="perf-body"><tr><td colspan="6" class="muted">Presiona “Cargar todas las cuentas” para ver el resumen.</td></tr></tbody></table></div>
+      <div class="tablewrap"><table><thead><tr><th>Cliente / cuenta</th><th style="text-align:right">Campañas activas</th><th style="text-align:right">Gasto USD</th><th style="text-align:right">Resultados</th><th style="text-align:right">Costo por resultado</th><th>Peor campaña</th></tr></thead><tbody id="perf-body"><tr><td colspan="6" class="muted">Presiona “Cargar todas las cuentas” para ver el resumen.</td></tr></tbody></table></div>
     </div>
   </section>
 
@@ -165,6 +169,10 @@ const CITIES = [
   {name:"Santo Domingo", lat:-0.2530, lng:-79.1754, r:20},
   {name:"Ambato", lat:-1.2491, lng:-78.6168, r:20}
 ];
+const PORTFOLIO = [{"path": ["Grupo Roldán", "JTM", "Jetour"], "ids": ["1305706808328086", "625877685906143", "27130319863257751", "4598705777031478", "2134704717096087", "1956311601728732", "1681009754030421"]}, {"path": ["Grupo Roldán", "Vía a Daule", "Jetour"], "ids": ["935385195861603", "1056286320421708", "2667395257029172", "1552426876263723"]}, {"path": ["Grupo Roldán", "Vía a Daule", "JAC"], "ids": ["1067035569510370", "1756108082151993", "3558395907648019", "2054796318744018", "2471443403009428"]}, {"path": ["Grupo Roldán", "Vía a Daule", "Por confirmar"], "ids": ["2452455061924055", "1398259645702569"]}, {"path": ["Grupo Roldán", "Vía al Pan", "Jetour"], "ids": ["1690358691535688", "1637283144024768"]}, {"path": ["Grupo Roldán", "Vía al Pan", "JAC"], "ids": ["571570031548555"]}, {"path": ["Grupo Roldán", "Samborondón (por confirmar)", "Jetour"], "ids": ["1321153150004857"]}, {"path": ["Grupo Roldán", "Samborondón (por confirmar)", "JAC"], "ids": ["2024362505107990"]}, {"path": ["Ecuasueña"], "ids": ["1925557718322169"]}, {"path": ["Novalider"], "ids": ["7549422718480513", "25645633605106409"]}, {"path": ["Automekano GYE", "Guayaquil"], "ids": ["760703753774715", "1042137505031793"]}, {"path": ["Automekano UIO", "Quito"], "ids": ["460655532222596", "1394741435832662", "1063812906077323", "2503822630121850"]}, {"path": ["Weichai"], "ids": ["1024411000650642"]}];
+const PATH = {}; PORTFOLIO.forEach(g=>g.ids.forEach(id=>{PATH[id]=g.path;}));
+const CLIENTS = [...new Set(PORTFOLIO.map(g=>g.path[0]))];
+const pathOf = id => PATH[id] || ["Otros clientes"];
 const STEPS = ["Cliente","Brief","Creativos","Textos con IA","Revisar y crear"];
 const $ = (s,el=document)=>el.querySelector(s);
 const esc = s => String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
@@ -251,11 +259,15 @@ function nav(back, nextLabel, nextOk){
 function vClient(){
   if(!mcp) return `<h2>Conecta Meta Ads</h2><p class="note bad">Esta página necesita tu conector de Meta Ads de claude.ai. Ábrela desde claude.ai con tu sesión iniciada y acepta el permiso cuando lo pida.</p>`;
   const q=(S._q||"").toLowerCase();
-  const list=S.accounts.filter(usable).filter(a=>!q||(a.ad_account_name+" "+a.business_name).toLowerCase().includes(q));
+  const fc=S._client||"";
+  const list=S.accounts.filter(usable)
+    .filter(a=>!fc||pathOf(a.ad_account_id)[0]===fc)
+    .filter(a=>!q||(a.ad_account_name+" "+a.business_name+" "+pathOf(a.ad_account_id).join(" ")).toLowerCase().includes(q));
   const off=S.accounts.filter(a=>!usable(a));
-  return `<div><h2>¿Para qué cliente es la pauta?</h2><p class="muted">Solo se muestran cuentas activas, con método de pago y habilitadas para Claude.</p></div>
-  <input type="search" id="q" placeholder="Buscar cliente o asesor…" value="${esc(S._q||"")}" aria-label="Buscar cliente">
-  <div class="list">${S.accounts.length?list.map(a=>`<button data-acc="${a.ad_account_id}" aria-pressed="${S.account&&S.account.ad_account_id===a.ad_account_id}"><span>${esc(a.ad_account_name)}<br><span class="muted" style="font-size:13px">${esc(a.business_name)}</span></span><span class="id">${a.ad_account_id}</span></button>`).join("")||'<p class="muted" style="padding:14px">Ningún cliente coincide.</p>':'<p style="padding:14px" class="muted"><span class="spin"></span> Cargando cuentas…</p>'}</div>
+  return `<div><h2>¿Para qué cliente es la pauta?</h2><p class="muted">Cuentas agrupadas por cliente, sede y marca. Solo se muestran las activas, con método de pago y habilitadas para Claude.</p></div>
+  <div class="chips">${["",...CLIENTS,"Otros clientes"].map(c=>`<button class="chip" data-client="${esc(c)}" aria-pressed="${fc===c}">${c||"Todos"}</button>`).join("")}</div>
+  <input type="search" id="q" placeholder="Buscar asesor, sede o marca…" value="${esc(S._q||"")}" aria-label="Buscar cliente">
+  <div class="list">${S.accounts.length?(groupAccounts(list).map(([path,accs])=>`<div class="ghead">${path.map(esc).join(' <span class="muted">›</span> ')}</div>`+accs.map(a=>`<button data-acc="${a.ad_account_id}" aria-pressed="${S.account&&S.account.ad_account_id===a.ad_account_id}"><span>${esc(a.ad_account_name)}<br><span class="muted" style="font-size:13px">${esc(a.business_name)}</span></span><span class="id">${a.ad_account_id}</span></button>`).join("")).join("")||'<p class="muted" style="padding:14px">Ningún cliente coincide.</p>'):'<p style="padding:14px" class="muted"><span class="spin"></span> Cargando cuentas…</p>'}</div>
   ${off.length?`<details><summary class="muted">${off.length} cuentas no disponibles (deshabilitadas, sin pago o sin acceso de Claude)</summary><p class="muted" style="margin-top:8px">${off.map(a=>esc(a.ad_account_name)).join(" · ")}</p></details>`:""}
   ${S.account?`<div class="row">
     <label class="f">Página de Facebook (dueña del WhatsApp)
@@ -264,6 +276,13 @@ function vClient(){
       <select id="ig"><option value="">Sin Instagram</option>${S.igs.map(g=>`<option value="${esc(g.id)}" ${S.ig===g.id?'selected':''}>@${esc(g.name)}</option>`).join("")}</select></label>
   </div>`:""}
   ${nav(false,"Siguiente: brief",S.account&&S.page)}`;
+}
+
+function groupAccounts(accs){
+  const order=PORTFOLIO.map(g=>g.path.join(" › ")).concat(["Otros clientes"]);
+  const m=new Map();
+  accs.forEach(a=>{ const p=pathOf(a.ad_account_id), k=p.join(" › "); if(!m.has(k)) m.set(k,[p,[]]); m.get(k)[1].push(a); });
+  return [...m.entries()].sort((x,y)=>order.indexOf(x[0])-order.indexOf(y[0])).map(e=>e[1]);
 }
 
 function vBrief(){
@@ -354,6 +373,7 @@ function vReview(){
 function bindStep(){
   document.querySelectorAll("[data-go]").forEach(b=>b.onclick=()=>{ saveFields(); const i=+b.dataset.go; if(canGo(i)){S.step=i; render(); window.scrollTo({top:0});} });
   const q=$("#q"); if(q) q.oninput=()=>{S._q=q.value; const pos=q.selectionStart; render(); const n=$("#q"); n.focus(); n.setSelectionRange(pos,pos);};
+  document.querySelectorAll("[data-client]").forEach(b=>b.onclick=()=>{S._client=b.dataset.client; render();});
   document.querySelectorAll("[data-acc]").forEach(b=>b.onclick=()=>pickAccount(b.dataset.acc));
   const pg=$("#page"); if(pg) pg.onchange=()=>{S.page=S.pages.find(p=>p.page_id===pg.value)||null; render();};
   const ig=$("#ig"); if(ig) ig.onchange=()=>{S.ig=ig.value||null;};
@@ -578,11 +598,22 @@ async function loadPerf(){
   if(!accs.length){ st.textContent="No hay cuentas para revisar."; return; }
   btn.disabled=true; const rows=[]; let done=0;
   const draw=()=>{
-    rows.sort((x,y)=>y.spend-x.spend);
-    body.innerHTML=rows.map(r=>{
-      const cls=r.err?"n":(r.cpr==null?"n":r.cpr<=0.8?"g":r.cpr<=1.44?"y":"r");
-      return `<tr><td><span class="sev ${cls}"></span>${esc(r.name)}</td><td class="num">${r.err?"—":r.n}</td><td class="num">${r.err?"—":money(r.spend)}</td><td class="num">${r.err?"—":r.res}</td><td class="num">${r.cpr==null?"—":money(r.cpr)}</td><td>${r.err?`<span class="muted">${esc(r.err)}</span>`:(r.worst?esc(r.worst):"")}</td></tr>`;
-    }).join("");
+    const sevOf=r=>r.err?"n":(r.cpr==null?"n":r.cpr<=0.8?"g":r.cpr<=1.44?"y":"r");
+    const row=r=>`<tr><td class="ind"><span class="sev ${sevOf(r)}"></span>${esc(r.name)}</td><td class="num">${r.err?"—":r.n}</td><td class="num">${r.err?"—":money(r.spend)}</td><td class="num">${r.err?"—":r.res}</td><td class="num">${r.cpr==null?"—":money(r.cpr)}</td><td>${r.err?`<span class="muted">${esc(r.err)}</span>`:(r.worst?esc(r.worst):"")}</td></tr>`;
+    const tot=list=>{const sp=list.reduce((a,r)=>a+(r.spend||0),0), rs=list.reduce((a,r)=>a+(r.res||0),0); return {spend:sp,res:rs,cpr:rs?sp/rs:null,n:list.reduce((a,r)=>a+(r.n||0),0)};};
+    const sumRow=(cls,label,t)=>`<tr class="${cls}"><td><span class="sev ${sevOf(t)}"></span>${label}</td><td class="num">${t.n}</td><td class="num">${money(t.spend)}</td><td class="num">${t.res}</td><td class="num">${t.cpr==null?"—":money(t.cpr)}</td><td></td></tr>`;
+    let html="";
+    [...CLIENTS,"Otros clientes"].forEach(cli=>{
+      const cr=rows.filter(r=>pathOf(r.id)[0]===cli); if(!cr.length) return;
+      html+=sumRow("cli",esc(cli),tot(cr));
+      const subs=new Map(); cr.forEach(r=>{const k=pathOf(r.id).slice(1).join(" › "); if(!subs.has(k)) subs.set(k,[]); subs.get(k).push(r);});
+      const order=PORTFOLIO.map(g=>g.path.slice(1).join(" › "));
+      [...subs.entries()].sort((a,b)=>order.indexOf(a[0])-order.indexOf(b[0])).forEach(([k,list])=>{
+        if(k && subs.size>1) html+=sumRow("grp",esc(k),tot(list));
+        list.sort((x,y)=>y.spend-x.spend).forEach(r=>{html+=row(r);});
+      });
+    });
+    body.innerHTML=html;
     st.innerHTML=done<accs.length?`<span class="spin"></span> Revisadas ${done} de ${accs.length} cuentas…`:`Revisadas ${accs.length} cuentas · Gasto total: USD <b class="mono">${money(rows.reduce((s,r)=>s+r.spend,0))}</b>`;
   };
   draw();
@@ -601,8 +632,8 @@ async function loadPerf(){
           const cpr=parseFloat(e.cost_per_result&&e.cost_per_result.value);
           if(!isNaN(cpr)&&rv>=5&&cpr>worstC){ worstC=cpr; worst=`${e.name} · USD ${money(cpr)}`; }
         });
-        if(ents.length) rows.push({name:a.ad_account_name,n:ents.length,spend,res,cpr:res?spend/res:null,worst:worstC>1.44?worst:""});
-      }catch(e){ rows.push({name:a.ad_account_name,spend:0,err:errText(e)}); }
+        if(ents.length) rows.push({id:a.ad_account_id,name:a.ad_account_name,n:ents.length,spend,res,cpr:res?spend/res:null,worst:worstC>1.44?worst:""});
+      }catch(e){ rows.push({id:a.ad_account_id,name:a.ad_account_name,spend:0,err:errText(e)}); }
       done++; draw();
     }
   }

@@ -6,7 +6,7 @@ description: Revisión diaria o semanal de campañas activas de Meta Ads con reg
 # Optimización con reglas
 
 ## Pasos
-1. Cuentas a revisar: las que Kevin indique, o todas las ✅ de `trafficker/cuentas/_indice.md` con campañas activas.
+1. Cuentas a revisar: las que Kevin indique, o las cuentas de un cliente, sede o marca de `trafficker/portafolio.json` (ej. "Grupo Roldán › Vía a Daule › JAC"), o todas. Presentar el resultado agrupado por cliente › sede › marca, con subtotales.
 2. Para cada cuenta, `ads_get_ad_entities`:
    - Nivel `ad`, filtrar activos, `last_7d` y `last_3d`, campos `id, name, amount_spent, results, cost_per_result, impressions, frequency, cpm, ctr`.
    - Nivel `campaign`, `last_7d`, con presupuesto.

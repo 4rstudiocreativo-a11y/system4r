@@ -19,7 +19,8 @@ No es un modelo reentrenado: es un sistema que lee y escribe su propia memoria e
 ```
 conocimiento/        → la metodología (cómo trabajamos)       ← la editas tú o el agente propone cambios
   fuentes-externas/  → notas de cursos y mentores              ← las traes tú
-cuentas/             → ficha por cliente: datos, decisiones, aprendizajes
+portafolio.json      → estructura cliente › sede › marca › cuenta (Grupo Roldán, Ecuasueña, Novalider, Automekano GYE/UIO, Weichai…)
+cuentas/             → una carpeta por cliente con la ficha de cada asesor: datos, decisiones, aprendizajes
 bitacora/            → experimentos y creativos ganadores de TODAS las cuentas
 briefs/              → pedidos de campaña
 ```

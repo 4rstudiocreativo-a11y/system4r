@@ -26,7 +26,7 @@ Si el anuncio **ofrece crédito/financiamiento como mensaje principal** ("cuotas
 7. **Recorrido / detalle** — tour de 20-30 s del interior, tecnología, espacio para la familia.
 
 ## Lo que aprendimos de las cuentas reales
-Ver `trafficker/cuentas/jtm-nelly.md`. Resumen:
+Ver `trafficker/cuentas/grupo-roldan/jtm/jetour/nelly.md`. Resumen:
 - Las campañas con **un modelo concreto** (X50) rinden mejor que las genéricas ("Vehículos Jetour", "Venta de Jetour": ~USD 2,1 por conversación).
 - Demasiadas campañas pequeñas: 24 campañas en 90 días con ~USD 270 en total → casi ninguna salió de aprendizaje. **Consolidar** es la mejora número 1.
 
