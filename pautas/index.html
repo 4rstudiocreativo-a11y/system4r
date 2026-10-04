@@ -1,0 +1,621 @@
+<title>4R Pautas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Figtree:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+/* Layout: herramienta de una columna — cabecera con estado, pestañas, asistente por pasos con rail lateral (se apila en móvil). */
+:root{
+  --bg:#f6f4f2; --surface:#ffffff; --sunken:#efebe7; --line:#e2dcd6;
+  --fg:#1d1a26; --muted:#6c6573; --accent:#ff6b35; --accent-ink:#c2410c; --accent-soft:#ffe6dc;
+  --ok:#1f8a5b; --ok-soft:#dcf3e8; --warn:#a36500; --warn-soft:#fff1d6; --bad:#c0392b; --bad-soft:#fbe3e0;
+  --display:"Bricolage Grotesque",ui-sans-serif,system-ui,sans-serif;
+  --body:"Figtree",ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+  --r:12px;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0f0f1e; --surface:#16192e; --sunken:#1d2140; --line:#2a2f52;
+  --fg:#f3f1f7; --muted:#a3a0b8; --accent:#ff7a48; --accent-ink:#ffa27e; --accent-soft:#3a2230;
+  --ok:#4ecca3; --ok-soft:#173a33; --warn:#f2b24d; --warn-soft:#3b3020; --bad:#ff7b6e; --bad-soft:#3d1f26; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0f0f1e; --surface:#16192e; --sunken:#1d2140; --line:#2a2f52;
+  --fg:#f3f1f7; --muted:#a3a0b8; --accent:#ff7a48; --accent-ink:#ffa27e; --accent-soft:#3a2230;
+  --ok:#4ecca3; --ok-soft:#173a33; --warn:#f2b24d; --warn-soft:#3b3020; --bad:#ff7b6e; --bad-soft:#3d1f26; color-scheme:dark}
+*{box-sizing:border-box}
+html,body{background:var(--bg);color:var(--fg)}
+body{font-family:var(--body);font-size:15px;line-height:1.5;padding-inline:16px;padding-block:20px 48px}
+.wrap{max-width:1040px;margin:0 auto;display:flex;flex-direction:column;gap:20px}
+h1,h2,h3{font-family:var(--display);text-wrap:balance;margin:0;line-height:1.15}
+h1{font-size:28px;font-weight:800;letter-spacing:-.01em}
+h1 b{color:var(--accent)}
+h2{font-size:22px;font-weight:800}
+h3{font-size:16px;font-weight:600}
+p{margin:0}
+.muted{color:var(--muted)}
+.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+header.top{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px}
+.sub{color:var(--muted);font-size:14px}
+.pill{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:999px;font-size:12px;font-weight:600;letter-spacing:.02em;background:var(--sunken);color:var(--muted)}
+.pill::before{content:"";width:8px;height:8px;border-radius:50%;background:currentColor}
+.pill.ok{background:var(--ok-soft);color:var(--ok)} .pill.warn{background:var(--warn-soft);color:var(--warn)} .pill.bad{background:var(--bad-soft);color:var(--bad)}
+nav.tabs{display:flex;gap:4px;border-bottom:1px solid var(--line)}
+nav.tabs button{background:none;border:0;border-bottom:3px solid transparent;padding:10px 14px;font:600 15px var(--body);color:var(--muted);cursor:pointer}
+nav.tabs button[aria-selected="true"]{color:var(--fg);border-color:var(--accent)}
+.grid{display:grid;grid-template-columns:220px minmax(0,1fr);gap:24px;align-items:start}
+@media (max-width:760px){.grid{grid-template-columns:minmax(0,1fr)}}
+ol.rail{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:2px;position:sticky;top:calc(env(safe-area-inset-top,0px) + 12px)}
+@media (max-width:760px){ol.rail{flex-direction:row;overflow-x:auto;position:static}}
+ol.rail button{width:100%;display:flex;gap:10px;align-items:center;text-align:left;background:none;border:0;padding:10px 12px;border-radius:10px;font:500 14px var(--body);color:var(--muted);cursor:pointer;white-space:nowrap}
+ol.rail button .n{width:24px;height:24px;flex:none;border-radius:50%;display:grid;place-items:center;font:600 12px var(--mono);background:var(--sunken);color:var(--muted)}
+ol.rail button[aria-current="step"]{background:var(--surface);color:var(--fg);box-shadow:0 0 0 1px var(--line)}
+ol.rail button[aria-current="step"] .n{background:var(--accent);color:#fff}
+ol.rail button.done .n{background:var(--ok-soft);color:var(--ok)}
+ol.rail button:disabled{opacity:.45;cursor:default}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:24px;display:flex;flex-direction:column;gap:18px;min-width:0}
+.row{display:flex;flex-wrap:wrap;gap:16px}
+.row>*{flex:1 1 220px;min-width:0}
+label.f{display:flex;flex-direction:column;gap:6px;font-weight:600;font-size:13px}
+label.f small{font-weight:400;color:var(--muted)}
+input[type=text],input[type=number],input[type=search],select,textarea{width:100%;font:15px var(--body);color:var(--fg);background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:10px 12px}
+textarea{min-height:84px;resize:vertical}
+input:focus-visible,select:focus-visible,textarea:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.check{display:flex;gap:10px;align-items:flex-start;font-size:14px}
+.check input{margin-top:3px;accent-color:var(--accent)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border-radius:10px;padding:11px 18px;font:600 15px var(--body);cursor:pointer;border:1px solid var(--line);background:var(--surface);color:var(--fg)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+.btn.primary:hover{filter:brightness(1.05)}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.btn.small{padding:6px 12px;font-size:13px}
+.actions{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;align-items:center}
+.list{display:flex;flex-direction:column;border:1px solid var(--line);border-radius:10px;max-height:360px;overflow:auto}
+.list button{display:flex;justify-content:space-between;gap:12px;align-items:center;text-align:left;padding:12px 14px;background:none;border:0;border-bottom:1px solid var(--line);font:500 15px var(--body);color:var(--fg);cursor:pointer}
+.list button:last-child{border-bottom:0}
+.list button:hover{background:var(--sunken)}
+.list button[aria-pressed="true"]{background:var(--accent-soft)}
+.list .id{font:500 12px var(--mono);color:var(--muted)}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{padding:7px 12px;border-radius:999px;border:1px solid var(--line);background:var(--bg);font:500 14px var(--body);color:var(--fg);cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
+.media{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px}
+.tile{position:relative;border:2px solid var(--line);border-radius:10px;overflow:hidden;background:var(--sunken);cursor:pointer;padding:0;text-align:left;color:var(--fg);font:inherit}
+.tile[aria-pressed="true"]{border-color:var(--accent)}
+.tile .thumb{aspect-ratio:9/16;max-width:100%;width:100%;object-fit:cover;display:block;background:var(--sunken)}
+.tile .cap{padding:8px 10px;font-size:12px;line-height:1.3;word-break:break-word}
+.tile .tag{position:absolute;top:8px;left:8px;background:rgba(0,0,0,.6);color:#fff;font:600 11px var(--mono);padding:2px 6px;border-radius:6px}
+.tile .tick{position:absolute;top:8px;right:8px;width:24px;height:24px;border-radius:50%;background:var(--accent);color:#fff;display:none;place-items:center;font-weight:700}
+.tile[aria-pressed="true"] .tick{display:grid}
+.drop{border:2px dashed var(--line);border-radius:12px;padding:22px;text-align:center;display:flex;flex-direction:column;gap:8px;align-items:center;color:var(--muted)}
+.drop.over{border-color:var(--accent);background:var(--accent-soft)}
+.note{border-radius:10px;padding:12px 14px;font-size:14px;background:var(--sunken)}
+.note.warn{background:var(--warn-soft);color:var(--fg)} .note.bad{background:var(--bad-soft)} .note.ok{background:var(--ok-soft)}
+.summary{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px}
+.summary div{background:var(--sunken);border-radius:10px;padding:12px 14px;min-width:0}
+.summary dt{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:600}
+.summary dd{margin:4px 0 0;font-weight:600;word-break:break-word}
+.log{font:13px/1.6 var(--mono);background:var(--sunken);border-radius:10px;padding:12px 14px;max-height:260px;overflow:auto;white-space:pre-wrap}
+.log .e{color:var(--bad)} .log .s{color:var(--ok)}
+.copy{display:flex;flex-direction:column;gap:12px}
+.tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:10px}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th,td{padding:10px 12px;text-align:left;border-bottom:1px solid var(--line);white-space:nowrap}
+th{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);background:var(--sunken)}
+td.num{text-align:right;font-family:var(--mono);font-variant-numeric:tabular-nums}
+.sev{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px;vertical-align:middle}
+.sev.g{background:var(--ok)} .sev.y{background:var(--warn)} .sev.r{background:var(--bad)} .sev.n{background:var(--line)}
+.confirm{border:2px solid var(--accent);border-radius:12px;padding:18px;display:flex;flex-direction:column;gap:12px;background:var(--accent-soft)}
+.spin{width:16px;height:16px;border:2px solid currentColor;border-right-color:transparent;border-radius:50%;animation:sp .8s linear infinite;display:inline-block}
+@keyframes sp{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){.spin{animation:none}}
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <div>
+      <h1>4R <b>Pautas</b></h1>
+      <p class="sub">De la idea a la campaña de WhatsApp en tu cuenta de Meta, en 5 pasos.</p>
+    </div>
+    <span id="conn" class="pill">Conectando con Meta Ads…</span>
+  </header>
+
+  <nav class="tabs" role="tablist">
+    <button role="tab" id="tab-new" aria-selected="true">Nueva pauta</button>
+    <button role="tab" id="tab-perf" aria-selected="false">Rendimiento</button>
+    <button role="tab" id="tab-hist" aria-selected="false">Historial</button>
+  </nav>
+
+  <!-- NUEVA PAUTA -->
+  <section id="view-new" class="grid">
+    <ol class="rail" id="rail"></ol>
+    <div class="panel" id="step"></div>
+  </section>
+
+  <!-- RENDIMIENTO -->
+  <section id="view-perf" hidden>
+    <div class="panel">
+      <div class="actions">
+        <div><h2>Rendimiento de los últimos 7 días</h2><p class="muted">Campañas activas por cuenta. Verde: costo por resultado de USD 0,80 o menos · Amarillo: hasta USD 1,44 · Rojo: más de USD 1,44.</p></div>
+        <button class="btn primary" id="perf-load">Cargar todas las cuentas</button>
+      </div>
+      <div id="perf-status" class="muted"></div>
+      <div class="tablewrap"><table><thead><tr><th>Cuenta</th><th>Campañas activas</th><th style="text-align:right">Gasto USD</th><th style="text-align:right">Resultados</th><th style="text-align:right">Costo por resultado</th><th>Peor campaña</th></tr></thead><tbody id="perf-body"><tr><td colspan="6" class="muted">Presiona “Cargar todas las cuentas” para ver el resumen.</td></tr></tbody></table></div>
+    </div>
+  </section>
+
+  <!-- HISTORIAL -->
+  <section id="view-hist" hidden>
+    <div class="panel">
+      <h2>Pautas creadas desde aquí</h2>
+      <p class="muted">Se guardan solo en este navegador.</p>
+      <div id="hist"></div>
+    </div>
+  </section>
+</div>
+
+<script>
+(function(){
+"use strict";
+const SERVER = "Meta Ads";
+const CID = Array.from({length:20},()=> "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"[Math.floor(Math.random()*62)]).join("");
+const CITIES = [
+  {name:"Guayaquil", lat:-2.1894, lng:-79.8891, r:30},
+  {name:"Samborondón", lat:-2.1450, lng:-79.8700, r:20},
+  {name:"Quito", lat:-0.1807, lng:-78.4678, r:25},
+  {name:"Cuenca", lat:-2.9001, lng:-79.0059, r:20},
+  {name:"Manta", lat:-0.9677, lng:-80.7089, r:20},
+  {name:"Machala", lat:-3.2581, lng:-79.9554, r:20},
+  {name:"Santo Domingo", lat:-0.2530, lng:-79.1754, r:20},
+  {name:"Ambato", lat:-1.2491, lng:-78.6168, r:20}
+];
+const STEPS = ["Cliente","Brief","Creativos","Textos con IA","Revisar y crear"];
+const $ = (s,el=document)=>el.querySelector(s);
+const esc = s => String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const money = n => (Math.round(n*100)/100).toLocaleString("es-EC",{minimumFractionDigits:2,maximumFractionDigits:2});
+
+let mcp=null, sample=null;
+const S = {
+  step:0, accounts:[], account:null, pages:[], page:null, igs:[], ig:null,
+  brief:{product:"",offer:"",ideal:"",budget:10,city:"Guayaquil",radius:30,credit:false,start:""},
+  library:{videos:[],images:[]}, selected:[], copy:null, created:null, log:[]
+};
+
+/* ---------- Meta Ads ---------- */
+async function meta(tool, input){
+  if(!mcp) throw {code:"not_granted",message:"Sin conexión a Meta Ads"};
+  const res = await mcp.callTool(SERVER, tool, Object.assign({client_conversation_id:CID}, input||{}));
+  let p = res.payload;
+  if(typeof p==="string"){ try{p=JSON.parse(p)}catch(e){} }
+  return p;
+}
+function errText(e){
+  const c = e&&e.code;
+  if(c==="needs_reauth") return "La conexión con Meta Ads venció. Reconéctala en claude.ai → Configuración → Conectores.";
+  if(c==="server_not_connected") return "No tienes el conector Meta Ads agregado. Agrégalo en claude.ai → Configuración → Conectores.";
+  if(c==="not_in_manifest") return "Esta página no tiene permiso para usar Meta Ads. Ábrelo desde el menú Permisos de la página.";
+  if(c==="server_unavailable") return "Meta Ads no respondió. Espera unos segundos e inténtalo de nuevo.";
+  if(c==="tool_error") return "Meta respondió con un error: "+(e.message||"");
+  return (e&&e.message)||String(e);
+}
+function findId(obj, keys){
+  if(!obj||typeof obj!=="object") return null;
+  for(const k of keys){ if(obj[k]!=null && typeof obj[k]!=="object") return String(obj[k]); }
+  for(const v of Object.values(obj)){ if(v&&typeof v==="object"){ const r=findId(v,keys); if(r) return r; } }
+  return null;
+}
+function arr(p, keys){
+  if(Array.isArray(p)) return p;
+  if(!p||typeof p!=="object") return [];
+  for(const k of keys){ let v=p[k]; if(typeof v==="string"){try{v=JSON.parse(v)}catch(e){}} if(Array.isArray(v)) return v; }
+  return [];
+}
+
+/* ---------- Boot ---------- */
+async function boot(){
+  render();
+  try{ mcp = await window.claude?.use?.("mcp"); }catch(e){ mcp=null; }
+  try{ sample = await window.claude?.use?.("sample"); }catch(e){ sample=null; }
+  const conn=$("#conn");
+  if(!mcp){ conn.className="pill bad"; conn.textContent="Sin conexión a Meta Ads"; render(); return; }
+  try{
+    let cursor=null, all=[];
+    do{
+      const p = await meta("ads_get_ad_accounts",{limit:50, cursor:cursor||undefined, advertiser_request:"ver mis cuentas para crear una pauta"});
+      all = all.concat(arr(p,["ad_accounts"]));
+      cursor = p&&p.next_cursor;
+    }while(cursor && all.length<300);
+    S.accounts = all;
+    conn.className="pill ok"; conn.textContent=`Meta Ads conectado · ${all.filter(usable).length} cuentas`;
+  }catch(e){ conn.className="pill bad"; conn.textContent=errText(e); }
+  render();
+}
+const usable = a => a.is_ads_mcp_enabled && a.account_status==="ACTIVE" && a.has_payment_method;
+
+/* ---------- Render ---------- */
+function render(){
+  const rail=$("#rail");
+  rail.innerHTML = STEPS.map((s,i)=>`<li><button data-go="${i}" ${i===S.step?'aria-current="step"':''} class="${i<S.step?'done':''}" ${canGo(i)?'':'disabled'}><span class="n">${i<S.step?'✓':i+1}</span>${s}</button></li>`).join("");
+  const el=$("#step");
+  el.innerHTML = [vClient,vBrief,vCreative,vCopy,vReview][S.step]();
+  bindStep();
+}
+function canGo(i){
+  if(i===0) return true;
+  if(i>=1 && !(S.account&&S.page)) return false;
+  if(i>=2 && !(S.brief.product && S.brief.budget>=1)) return false;
+  if(i>=3 && !S.selected.length) return false;
+  if(i>=4 && !S.copy) return false;
+  return true;
+}
+function nav(back, nextLabel, nextOk){
+  return `<div class="actions">${back?`<button class="btn" data-go="${S.step-1}">Atrás</button>`:'<span></span>'}${nextLabel?`<button class="btn primary" data-go="${S.step+1}" ${nextOk?'':'disabled'}>${nextLabel}</button>`:''}</div>`;
+}
+
+function vClient(){
+  if(!mcp) return `<h2>Conecta Meta Ads</h2><p class="note bad">Esta página necesita tu conector de Meta Ads de claude.ai. Ábrela desde claude.ai con tu sesión iniciada y acepta el permiso cuando lo pida.</p>`;
+  const q=(S._q||"").toLowerCase();
+  const list=S.accounts.filter(usable).filter(a=>!q||(a.ad_account_name+" "+a.business_name).toLowerCase().includes(q));
+  const off=S.accounts.filter(a=>!usable(a));
+  return `<div><h2>¿Para qué cliente es la pauta?</h2><p class="muted">Solo se muestran cuentas activas, con método de pago y habilitadas para Claude.</p></div>
+  <input type="search" id="q" placeholder="Buscar cliente o asesor…" value="${esc(S._q||"")}" aria-label="Buscar cliente">
+  <div class="list">${S.accounts.length?list.map(a=>`<button data-acc="${a.ad_account_id}" aria-pressed="${S.account&&S.account.ad_account_id===a.ad_account_id}"><span>${esc(a.ad_account_name)}<br><span class="muted" style="font-size:13px">${esc(a.business_name)}</span></span><span class="id">${a.ad_account_id}</span></button>`).join("")||'<p class="muted" style="padding:14px">Ningún cliente coincide.</p>':'<p style="padding:14px" class="muted"><span class="spin"></span> Cargando cuentas…</p>'}</div>
+  ${off.length?`<details><summary class="muted">${off.length} cuentas no disponibles (deshabilitadas, sin pago o sin acceso de Claude)</summary><p class="muted" style="margin-top:8px">${off.map(a=>esc(a.ad_account_name)).join(" · ")}</p></details>`:""}
+  ${S.account?`<div class="row">
+    <label class="f">Página de Facebook (dueña del WhatsApp)
+      <select id="page">${S.pages.length?S.pages.map(p=>`<option value="${p.page_id}" ${S.page&&S.page.page_id===p.page_id?'selected':''}>${esc(p.page_name)}</option>`).join(""):'<option>Cargando páginas…</option>'}</select></label>
+    <label class="f">Instagram <small>opcional: sin cuenta no sale en Instagram</small>
+      <select id="ig"><option value="">Sin Instagram</option>${S.igs.map(g=>`<option value="${esc(g.id)}" ${S.ig===g.id?'selected':''}>@${esc(g.name)}</option>`).join("")}</select></label>
+  </div>`:""}
+  ${nav(false,"Siguiente: brief",S.account&&S.page)}`;
+}
+
+function vBrief(){
+  const b=S.brief;
+  const minB = Math.ceil((50/7)*0.8);
+  return `<div><h2>Cuéntame la pauta</h2><p class="muted">Campaña de WhatsApp para ${esc(S.account.ad_account_name)}. Con esto la IA escribe los textos.</p></div>
+  <label class="f">¿Qué vendemos? <small>Modelo y precio o entrada, si lo tienes</small><input type="text" id="b-product" value="${esc(b.product)}" placeholder="Jetour X50 desde USD 21.990, entrada desde USD 4.000"></label>
+  <label class="f">Oferta o gancho <small>Opcional. Solo si es real</small><input type="text" id="b-offer" value="${esc(b.offer)}" placeholder="Bono de USD 1.000 hasta el 31 de octubre"></label>
+  <label class="f">¿Quién es el cliente ideal? <small>Opcional</small><input type="text" id="b-ideal" value="${esc(b.ideal)}" placeholder="Familias que buscan su primera SUV, contado o crédito"></label>
+  <div class="row">
+    <label class="f">Presupuesto diario (USD)<input type="number" id="b-budget" min="1" step="0.5" value="${b.budget}"></label>
+    <label class="f">Radio (km)<input type="number" id="b-radius" min="${b.credit?17:5}" max="80" value="${b.radius}"></label>
+  </div>
+  <div class="f"><span style="font-weight:600;font-size:13px">Ciudad</span><div class="chips">${CITIES.map(c=>`<button class="chip" data-city="${c.name}" aria-pressed="${b.city===c.name}">${c.name}</button>`).join("")}</div></div>
+  <label class="check"><input type="checkbox" id="b-credit" ${b.credit?'checked':''}><span>El mensaje principal es <b>crédito o financiamiento</b>. Meta exige la categoría especial: sin filtro de edad y con un radio mínimo de 17 km.</span></label>
+  ${b.budget<minB?`<p class="note warn">Con USD ${money(b.budget)} al día la campaña difícilmente sale de la fase de aprendizaje. Lo recomendado es USD ${minB} o más por día.</p>`:`<p class="note ok">Con USD ${money(b.budget)} al día puedes esperar unas ${Math.round(b.budget/0.8*7)} conversaciones por semana, si el costo se mantiene cerca del promedio de 4R (USD 0,80).</p>`}
+  ${nav(true,"Siguiente: creativos",b.product&&b.budget>=1)}`;
+}
+
+function vCreative(){
+  const L=S.library;
+  const tiles = [...L.videos.map(v=>({kind:"video",id:v.id,name:v.title||("Video "+v.id),thumb:v.picture,status:v.status})),
+                 ...L.images.map(i=>({kind:"image",id:i.hash,name:i.name||i.hash,thumb:i.url_128||i.url}))];
+  return `<div><h2>Elige los creativos</h2><p class="muted">Toma de 3 a 6 conceptos distintos (otro gancho, otra persona, otro formato). Cada uno será un anuncio.</p></div>
+  <div class="drop" id="drop">
+    <h3>Subir creativos nuevos</h3>
+    <p>Arrastra aquí tus videos (MP4 o MOV) e imágenes (JPG o PNG), o</p>
+    <label class="btn small">Elegir archivos<input type="file" id="files" accept="image/jpeg,image/png,video/mp4,video/quicktime" multiple hidden></label>
+    <div id="up-status" class="muted" style="font-size:13px"></div>
+  </div>
+  <div class="actions"><h3>Biblioteca de ${esc(S.account.ad_account_name)}</h3><button class="btn small" id="lib-reload">Actualizar biblioteca</button></div>
+  ${S._libLoading?'<p class="muted"><span class="spin"></span> Cargando videos e imágenes de la cuenta…</p>':""}
+  ${S._libErr?`<p class="note bad">${esc(S._libErr)}</p>`:""}
+  <div class="media">${tiles.map(t=>{const on=S.selected.some(s=>s.id===t.id);return `<button class="tile" data-media="${esc(t.kind)}|${esc(t.id)}" aria-pressed="${on}">
+    ${t.thumb?`<img class="thumb" src="${esc(t.thumb)}" alt="" loading="lazy">`:`<div class="thumb"></div>`}
+    <span class="tag">${t.kind==="video"?"VIDEO":"IMAGEN"}</span><span class="tick">✓</span>
+    <div class="cap">${esc(t.name)}${t.kind==="video"&&t.status&&!/ready/i.test(JSON.stringify(t.status))?` <span class="muted">· procesando</span>`:""}</div></button>`}).join("")||(!S._libLoading?'<p class="muted">Esta cuenta aún no tiene creativos. Sube los primeros arriba.</p>':"")}</div>
+  <p class="muted">${S.selected.length} seleccionados.</p>
+  ${nav(true,"Siguiente: textos con IA",S.selected.length>0)}`;
+}
+
+function vCopy(){
+  const c=S.copy;
+  return `<div><h2>Textos del anuncio</h2><p class="muted">La IA los escribe con la metodología 4R. Puedes editarlos.</p></div>
+  ${!sample?`<p class="note warn">La IA no está disponible en esta vista. Escribe los textos a mano.</p>`:""}
+  <div class="actions"><span></span><button class="btn ${c?'':'primary'}" id="gen" ${sample?'':'disabled'}>${S._gen?'<span class="spin"></span> Escribiendo…':(c?'Volver a generar':'Generar textos con IA')}</button></div>
+  ${S._genErr?`<p class="note bad">${esc(S._genErr)}</p>`:""}
+  <div class="copy">
+    <label class="f">Nombre de la campaña<input type="text" id="c-name" value="${esc(c?c.campaign_name:defaultName())}"></label>
+    ${[0,1,2].map(i=>`<label class="f">Texto principal, versión ${i+1} <small>Se reparte entre los anuncios</small><textarea id="c-t${i}">${esc(c&&c.primary_texts?c.primary_texts[i]||"":"")}</textarea></label>`).join("")}
+    <div class="row">
+      <label class="f">Titular<input type="text" id="c-head" value="${esc(c?c.headline:"")}" maxlength="40"></label>
+    </div>
+    <label class="f">Mensaje de bienvenida sugerido para WhatsApp <small>Configúralo en WhatsApp Business. Una pregunta que califique al cliente.</small><textarea id="c-wa">${esc(c?c.welcome_message:"")}</textarea></label>
+    ${c&&c.notes&&c.notes.length?`<div class="note"><b>Recomendaciones de la IA</b><ul style="margin:6px 0 0;padding-left:18px">${c.notes.map(n=>`<li>${esc(n)}</li>`).join("")}</ul></div>`:""}
+  </div>
+  ${nav(true,"Siguiente: revisar",true)}`;
+}
+
+function vReview(){
+  const b=S.brief, city=CITIES.find(c=>c.name===b.city);
+  const cr=S.created;
+  return `<div><h2>Revisa y crea</h2><p class="muted">Se crea como <b>borrador pausado</b> en Meta. No gasta nada hasta que lo publiques.</p></div>
+  <dl class="summary">
+    <div><dt>Cliente</dt><dd>${esc(S.account.ad_account_name)}</dd></div>
+    <div><dt>Objetivo</dt><dd>Conversaciones de WhatsApp</dd></div>
+    <div><dt>Presupuesto</dt><dd class="mono">USD ${money(b.budget)} / día</dd></div>
+    <div><dt>Ubicación</dt><dd>${esc(city.name)} · ${b.radius} km</dd></div>
+    <div><dt>Audiencia</dt><dd>${b.credit?"Amplia (categoría crédito)":"Amplia, 25 a 65 años como sugerencia"}</dd></div>
+    <div><dt>Anuncios</dt><dd>${S.selected.length} creativos</dd></div>
+  </dl>
+  <p class="muted" style="font-size:13px">Estructura 4R: 1 campaña con presupuesto a nivel campaña, 1 conjunto amplio con ubicaciones automáticas y ${S.selected.length} anuncios.</p>
+  ${!cr?`<div class="actions"><button class="btn" data-go="3">Atrás</button><button class="btn primary" id="create" ${S._busy?'disabled':''}>${S._busy?'<span class="spin"></span> Creando…':'Crear borrador en Meta'}</button></div>`:""}
+  ${S.log.length?`<div class="log" id="log">${S.log.map(l=>`<div class="${l.t}">${esc(l.m)}</div>`).join("")}</div>`:""}
+  ${cr&&cr.ok?`
+    <p class="note ok">Borrador listo. Revisa la vista previa en <a href="https://adsmanager.facebook.com/adsmanager/manage/campaigns?act=${S.account.ad_account_id}" target="_blank" rel="noopener">Ads Manager</a> o publícalo aquí.</p>
+    ${cr.published?`<p class="note ok"><b>Enviada a publicar.</b> Meta revisa los anuncios en unos minutos. Confírmalo en Ads Manager.</p>`:`
+    <div class="confirm">
+      <h3>Publicar y empezar a gastar</h3>
+      <p>Esta campaña gastará hasta <b class="mono">USD ${money(b.budget)}</b> al día en la cuenta de <b>${esc(S.account.ad_account_name)}</b>. Para confirmar, escribe el monto diario.</p>
+      <div class="row"><label class="f">Monto diario en USD<input type="text" id="confirm-amt" inputmode="decimal" placeholder="${b.budget}"></label></div>
+      <div class="actions"><span class="muted" style="font-size:13px">Podrás pausarla cuando quieras en Ads Manager.</span><button class="btn primary" id="publish" ${S._busy?'disabled':''}>${S._busy?'<span class="spin"></span> Publicando…':'Publicar campaña'}</button></div>
+    </div>`}
+    <div class="actions"><span></span><button class="btn" id="again">Crear otra pauta</button></div>`:""}`;
+}
+
+/* ---------- Events ---------- */
+function bindStep(){
+  document.querySelectorAll("[data-go]").forEach(b=>b.onclick=()=>{ saveFields(); const i=+b.dataset.go; if(canGo(i)){S.step=i; render(); window.scrollTo({top:0});} });
+  const q=$("#q"); if(q) q.oninput=()=>{S._q=q.value; const pos=q.selectionStart; render(); const n=$("#q"); n.focus(); n.setSelectionRange(pos,pos);};
+  document.querySelectorAll("[data-acc]").forEach(b=>b.onclick=()=>pickAccount(b.dataset.acc));
+  const pg=$("#page"); if(pg) pg.onchange=()=>{S.page=S.pages.find(p=>p.page_id===pg.value)||null; render();};
+  const ig=$("#ig"); if(ig) ig.onchange=()=>{S.ig=ig.value||null;};
+  document.querySelectorAll("[data-city]").forEach(b=>b.onclick=()=>{saveFields(); const c=CITIES.find(x=>x.name===b.dataset.city); S.brief.city=c.name; S.brief.radius=Math.max(c.r,S.brief.credit?17:0); render();});
+  const bud=$("#b-budget"); if(bud) bud.onchange=()=>{saveFields(); render();};
+  const cr=$("#b-credit"); if(cr) cr.onchange=()=>{saveFields(); if(S.brief.credit&&S.brief.radius<17) S.brief.radius=17; render();};
+  const prod=$("#b-product"); if(prod) prod.oninput=()=>{S.brief.product=prod.value.trim(); const nx=document.querySelector('.actions .primary[data-go]'); if(nx) nx.disabled=!(S.brief.product&&S.brief.budget>=1);};
+  document.querySelectorAll("[data-media]").forEach(b=>b.onclick=()=>toggleMedia(b.dataset.media));
+  const lr=$("#lib-reload"); if(lr) lr.onclick=()=>loadLibrary(true);
+  const files=$("#files"); if(files) files.onchange=()=>uploadFiles(files.files);
+  const drop=$("#drop"); if(drop){
+    drop.ondragover=e=>{e.preventDefault();drop.classList.add("over")};
+    drop.ondragleave=()=>drop.classList.remove("over");
+    drop.ondrop=e=>{e.preventDefault();drop.classList.remove("over");uploadFiles(e.dataTransfer.files)};
+  }
+  const gen=$("#gen"); if(gen) gen.onclick=generate;
+  const c=$("#create"); if(c) c.onclick=createDraft;
+  const p=$("#publish"); if(p) p.onclick=publish;
+  const a=$("#again"); if(a) a.onclick=()=>{S.step=0;S.selected=[];S.copy=null;S.created=null;S.log=[];S.brief.product="";S.brief.offer="";render();};
+  if(S.step===2 && !S._libLoaded && !S._libLoading) loadLibrary(false);
+  const log=$("#log"); if(log) log.scrollTop=log.scrollHeight;
+}
+function saveFields(){
+  const v=id=>{const e=$("#"+id);return e?e.value:null};
+  const b=S.brief;
+  if(v("b-product")!==null){ b.product=v("b-product").trim(); b.offer=v("b-offer").trim(); b.ideal=v("b-ideal").trim();
+    b.budget=Math.max(1,parseFloat(v("b-budget"))||0); b.radius=Math.min(80,Math.max(b.credit?17:5,parseInt(v("b-radius"))||20)); b.credit=$("#b-credit").checked; }
+  if(v("c-name")!==null){ S.copy=Object.assign(S.copy||{},{campaign_name:v("c-name").trim(),primary_texts:[v("c-t0"),v("c-t1"),v("c-t2")].map(s=>s.trim()),headline:v("c-head").trim(),welcome_message:v("c-wa").trim()}); }
+}
+function defaultName(){
+  const d=new Date(), ymd=String(d.getFullYear()).slice(2)+String(d.getMonth()+1).padStart(2,"0")+String(d.getDate()).padStart(2,"0");
+  const who=(S.account?S.account.ad_account_name:"").split(/[-|·]/)[0].trim().toUpperCase();
+  const what=(S.brief.product||"").split(/ desde| a | por |,/i)[0].trim().toUpperCase().slice(0,24);
+  return `${who} | INT | WA | ${what} | ${ymd}`;
+}
+
+async function pickAccount(id){
+  S.account=S.accounts.find(a=>a.ad_account_id===id); S.page=null; S.pages=[]; S.igs=[]; S.ig=null;
+  S.library={videos:[],images:[]}; S._libLoaded=false; S.selected=[]; S.copy=null; S.created=null; S.log=[];
+  render();
+  try{
+    const p=await meta("ads_get_ad_account_pages",{ad_account_id:id, advertiser_request:"pauta para este cliente"});
+    S.pages=arr(p,["pages"]); S.page=S.pages[0]||null;
+  }catch(e){ S.pages=[]; alertNote(errText(e)); }
+  try{
+    const g=await meta("ads_get_ig_accounts",{ad_account_id:id, advertiser_request:"pauta para este cliente"});
+    S.igs=arr(g,["ig_accounts","instagram_accounts","accounts","data"]).map(x=>({id:String(x.ig_account_id||x.instagram_user_id||x.id||""),name:x.username||x.name||x.ig_username||x.id})).filter(x=>x.id);
+    S.ig=S.igs[0]?S.igs[0].id:null;
+  }catch(e){ S.igs=[]; }
+  render();
+}
+function alertNote(msg){ const el=$("#step"); if(el) el.insertAdjacentHTML("afterbegin",`<p class="note bad">${esc(msg)}</p>`); }
+
+async function loadLibrary(force){
+  S._libLoading=true; S._libErr=null; render();
+  const id=S.account.ad_account_id, req="cargarle los creativos";
+  try{
+    const vl=await meta("ads_get_ad_videos",{ad_account_id:id,limit:24,advertiser_request:req});
+    const vids=arr(vl,["videos","data","ad_videos"]);
+    let full=vids;
+    if(vids.length){ try{ const d=await meta("ads_get_ad_videos",{ad_account_id:id,video_ids:vids.map(v=>String(v.id)),fields:["id","title","picture","status","length"],advertiser_request:req}); const a=arr(d,["videos","data","ad_videos"]); if(a.length) full=a; }catch(e){} }
+    const il=await meta("ads_get_ad_images",{ad_account_id:id,limit:24,advertiser_request:req});
+    const imgs=arr(il,["images","data","ad_images"]);
+    let fullI=imgs;
+    if(imgs.length){ try{ const d=await meta("ads_get_ad_images",{ad_account_id:id,hashes:imgs.map(i=>i.hash),fields:["hash","name","url_128","url","width","height"],advertiser_request:req}); const a=arr(d,["images","data","ad_images"]); if(a.length) fullI=a; }catch(e){} }
+    S.library={videos:full.map(v=>({...v,id:String(v.id)})),images:fullI};
+    S._libLoaded=true;
+  }catch(e){ S._libErr=errText(e); }
+  S._libLoading=false; render();
+}
+function toggleMedia(key){
+  const [kind,id]=key.split("|");
+  const i=S.selected.findIndex(s=>s.id===id);
+  if(i>=0) S.selected.splice(i,1);
+  else{
+    const src = kind==="video"? S.library.videos.find(v=>v.id===id) : S.library.images.find(x=>x.hash===id);
+    S.selected.push({kind,id,name:kind==="video"?(src.title||"Video "+id):(src.name||id),thumb:kind==="video"?src.picture:(src.url||src.url_128)});
+  }
+  render();
+}
+
+async function sha256Hex(buf){ const h=await crypto.subtle.digest("SHA-256",buf); return Array.from(new Uint8Array(h)).map(b=>b.toString(16).padStart(2,"0")).join(""); }
+async function uploadFiles(list){
+  const st=$("#up-status"); const files=Array.from(list||[]); if(!files.length) return;
+  const id=S.account.ad_account_id; let ok=0, fail=[];
+  for(const f of files){
+    st.innerHTML=`<span class="spin"></span> Subiendo ${esc(f.name)}…`;
+    try{
+      const isVid=/^video\//.test(f.type);
+      const buf=await f.arrayBuffer();
+      const prep=await meta("ads_creative_upload_local_image",{ad_account_id:id,image_name:f.name,mime_type:f.type,file_size:f.size,image_sha256:await sha256Hex(buf),media_kind:isVid?"video":"image",advertiser_request:"cargarle los creativos"});
+      const r=await fetch(prep.upload_url,{method:"POST",headers:{"Authorization":prep.upload_authorization,"offset":"0","file_size":String(f.size),"Content-Type":f.type},body:buf});
+      if(!r.ok) throw new Error("HTTP "+r.status);
+      const body=await r.json().catch(()=>({}));
+      const token=body.completion_token||findId(body,["completion_token","h","handle"]);
+      if(!token) throw new Error("sin token de cierre");
+      await meta("ads_finalize_local_ad_image_upload",{ad_account_id:id,completion_token:token,advertiser_request:"cargarle los creativos"});
+      ok++;
+    }catch(e){ fail.push(f.name); }
+  }
+  if(fail.length){
+    st.innerHTML=`<span style="color:var(--bad)">No pude subir ${fail.length} archivo(s) desde esta página (${esc(fail.join(", "))}).</span> Súbelos en <a href="https://adsmanager.facebook.com/adsmanager/media/library?act=${id}" target="_blank" rel="noopener">la biblioteca de Ads Manager</a> o en un chat de Claude, y luego presiona “Actualizar biblioteca”.`;
+  } else st.textContent="";
+  if(ok){ await new Promise(r=>setTimeout(r,1500)); loadLibrary(true); }
+}
+
+const METHOD = `Eres el trafficker senior de 4R Marketing (Guayaquil, Ecuador). Escribes anuncios de Meta (Facebook/Instagram) cuyo botón abre WhatsApp, para asesores comerciales de autos y negocios locales.
+Reglas probadas con datos de 4R:
+- Modelo concreto y precio/entrada visible rinden mucho mejor que mensajes genéricos de marca.
+- Comparar contra un competidor ("X50 vs Dashing", "Kaiyi vs Chery") es el ángulo ganador del portafolio.
+- Urgencia solo si es real (usa la oferta dada; no inventes bonos, precios ni fechas).
+- Primera línea = gancho. 2 a 4 líneas cortas en total. Emojis con moderación. Cierra con un llamado a escribir por WhatsApp.
+- Español de Ecuador, cercano y directo. Nada de promesas garantizadas, "crédito 100% aprobado" ni preguntas sobre atributos personales (políticas de Meta).
+- Las 3 versiones del texto deben usar ÁNGULOS DISTINTOS (por ejemplo: precio, comparativo, beneficio para la familia u objeción).`;
+
+async function generate(){
+  saveFields(); S._gen=true; S._genErr=null; render();
+  const b=S.brief;
+  const prompt=`${METHOD}
+
+Cliente/asesor: ${S.account.ad_account_name}
+Qué vendemos: ${b.product}
+Oferta: ${b.offer||"(sin oferta especial; no inventes una)"}
+Cliente ideal: ${b.ideal||"(no especificado)"}
+Ciudad: ${b.city}
+Mensaje sobre crédito como oferta principal: ${b.credit?"sí":"no"}
+Creativos elegidos: ${S.selected.map(s=>s.name).join("; ")}
+Nombre de campaña sugerido: ${defaultName()}
+
+Responde SOLO con JSON con esta forma exacta:
+{"campaign_name": string (usa el nombre sugerido o mejóralo manteniendo el formato CLIENTE | INT | WA | PRODUCTO | AAMMDD),
+ "primary_texts": [string, string, string],
+ "headline": string (máximo 40 caracteres),
+ "welcome_message": string (saludo de WhatsApp con una pregunta que califique: modelo de interés y si es contado o crédito),
+ "notes": [hasta 3 recomendaciones cortas y concretas sobre esta pauta]}`;
+  try{
+    const out=await sample.json(prompt,{modelTier:"default",cache:false});
+    if(!out||!Array.isArray(out.primary_texts)) throw new Error("La IA respondió en un formato inesperado. Inténtalo de nuevo.");
+    S.copy=out;
+  }catch(e){ S._genErr = e&&e.code==="not_granted"?"No diste permiso para usar la IA en esta página.":(e&&e.code==="rate_limited"?"Demasiadas solicitudes seguidas. Espera un minuto.":errText(e)); }
+  S._gen=false; render();
+}
+
+function logp(m,t=""){ S.log.push({m,t}); const el=$("#log"); if(el){ el.insertAdjacentHTML("beforeend",`<div class="${t}">${esc(m)}</div>`); el.scrollTop=el.scrollHeight; } else render(); }
+
+async function createDraft(){
+  saveFields();
+  const c=S.copy||{}; const texts=(c.primary_texts||[]).filter(Boolean);
+  if(!texts.length){ S.step=3; S._genErr="Escribe al menos un texto principal antes de crear."; render(); return; }
+  S._busy=true; S.log=[]; render();
+  const acc=S.account.ad_account_id, b=S.brief, city=CITIES.find(x=>x.name===b.city);
+  const req=`quiero una pauta para este cliente: ${b.product}${b.offer?" — "+b.offer:""}, USD ${b.budget} diarios en ${b.city}`;
+  const ids={campaign:null,adset:null,creatives:[],ads:[]};
+  try{
+    logp("1/4 Creando campaña…");
+    const cp=await meta("ads_create_campaign",{ad_account_id:acc,campaign_name:c.campaign_name||defaultName(),objective:"OUTCOME_ENGAGEMENT",buying_type:"AUCTION",
+      campaign_daily_budget:Math.round(b.budget*100),special_ad_categories:b.credit?'["FINANCIAL_PRODUCTS_SERVICES"]':"[]",special_ad_category_country:b.credit?'["EC"]':undefined,advertiser_request:req});
+    ids.campaign=findId(cp,["campaign_id","id"]); if(!ids.campaign) throw new Error("Meta no devolvió el id de la campaña.");
+    logp("   Campaña "+ids.campaign,"s");
+
+    logp("2/4 Creando conjunto de anuncios…");
+    const targeting={geo_locations:{custom_locations:[{latitude:city.lat,longitude:city.lng,radius:b.radius,distance_unit:"kilometer"}]}};
+    if(!b.credit){ targeting.age_min=25; targeting.age_max=65; }
+    const as=await meta("ads_create_ad_set",{ad_account_id:acc,campaign_id:ids.campaign,ad_set_name:`${b.city} ${b.radius}km | Amplio | WA`,billing_event:"IMPRESSIONS",
+      optimization_goal:"CONVERSATIONS",destination_type:"WHATSAPP",promoted_object:JSON.stringify({page_id:S.page.page_id}),targeting:JSON.stringify(targeting),advertiser_request:req});
+    ids.adset=findId(as,["ad_set_id","adset_id","id"]); if(!ids.adset) throw new Error("Meta no devolvió el id del conjunto.");
+    logp("   Conjunto "+ids.adset,"s");
+
+    logp(`3/4 Creando ${S.selected.length} anuncios…`);
+    for(let i=0;i<S.selected.length;i++){
+      const m=S.selected[i], text=texts[i%texts.length];
+      const base={ad_account_id:acc,page_id:S.page.page_id,name:`${m.name} | V${i+1}`,message:text,headline:c.headline||undefined,call_to_action_type:"WHATSAPP_MESSAGE",link_url:"https://api.whatsapp.com/send",instagram_user_id:S.ig||undefined,advertiser_request:req};
+      if(m.kind==="video"){ base.video_id=m.id; if(m.thumb) base.image_url=m.thumb; } else base.image_hash=m.id;
+      try{
+        const cr=await meta("ads_create_creative",base);
+        const crid=findId(cr,["creative_id","id"]); if(!crid) throw new Error("sin id de creativo");
+        const ad=await meta("ads_create_ad",{ad_account_id:acc,ad_set_id:ids.adset,ad_name:`${(m.name||"AD").slice(0,40)}-V${i+1}`,creative:JSON.stringify({creative_id:crid}),advertiser_request:req});
+        const adid=findId(ad,["ad_id","id"]); ids.creatives.push(crid); if(adid) ids.ads.push(adid);
+        logp(`   Anuncio ${i+1}: ${m.name}`,"s");
+      }catch(e){ logp(`   Anuncio ${i+1} (${m.name}) falló: ${errText(e)}`,"e"); }
+    }
+    if(!ids.ads.length) throw new Error("No se pudo crear ningún anuncio. Revisa los mensajes de arriba.");
+    logp("4/4 Listo. Todo quedó en borrador, sin gastar.","s");
+    S.created={ok:true,ids,at:new Date().toISOString()};
+    saveHistory({...S.created,account:S.account.ad_account_name,acc,name:c.campaign_name,budget:b.budget,status:"Borrador"});
+  }catch(e){
+    logp("Error: "+errText(e),"e");
+    if(ids.campaign) logp("Lo que alcanzó a crearse quedó en borrador pausado en Ads Manager; puedes borrarlo o completarlo allí.");
+    S.created=null;
+  }
+  S._busy=false; render();
+}
+
+async function publish(){
+  const b=S.brief, v=parseFloat(($("#confirm-amt").value||"").replace(",","."));
+  if(!(Math.abs(v-b.budget)<0.001)){ alertNote(`Escribe exactamente ${b.budget} para confirmar el gasto diario.`); return; }
+  S._busy=true; render();
+  const ids=S.created.ids, acc=S.account.ad_account_id;
+  try{
+    await meta("ads_activate_entity",{ad_account_id:acc,entity_id:ids.campaign,entity_type:"campaign",object_ids:[ids.campaign,ids.adset,...ids.ads],publish_as_active:true,
+      advertiser_request:`sí, publica la pauta de ${S.account.ad_account_name} con USD ${b.budget} diarios`});
+    S.created.published=true; logp("Campaña enviada a publicar.","s");
+    updateHistory(ids.campaign,"Publicada");
+  }catch(e){ logp("No se pudo publicar: "+errText(e)+" Puedes publicarla desde Ads Manager.","e"); }
+  S._busy=false; render();
+}
+
+/* ---------- Historial (local) ---------- */
+function readHist(){ try{ return JSON.parse(localStorage.getItem("4r-pautas")||"[]"); }catch(e){ return []; } }
+function saveHistory(h){ try{ const a=readHist(); a.unshift(h); localStorage.setItem("4r-pautas",JSON.stringify(a.slice(0,50))); }catch(e){} }
+function updateHistory(cid,status){ try{ const a=readHist(); a.forEach(h=>{ if(h.ids&&h.ids.campaign===cid) h.status=status; }); localStorage.setItem("4r-pautas",JSON.stringify(a)); }catch(e){} }
+function renderHist(){
+  const a=readHist();
+  $("#hist").innerHTML = a.length? `<div class="tablewrap"><table><thead><tr><th>Fecha</th><th>Cliente</th><th>Campaña</th><th style="text-align:right">USD/día</th><th>Estado</th></tr></thead><tbody>${a.map(h=>`<tr><td class="mono">${esc((h.at||"").slice(0,10))}</td><td>${esc(h.account)}</td><td><a href="https://adsmanager.facebook.com/adsmanager/manage/campaigns?act=${esc(h.acc)}&selected_campaign_ids=${esc(h.ids&&h.ids.campaign)}" target="_blank" rel="noopener">${esc(h.name)}</a></td><td class="num">${money(h.budget)}</td><td>${esc(h.status)}</td></tr>`).join("")}</tbody></table></div>`
+   : `<p class="muted">Aún no creas pautas desde esta página. Las que crees aparecerán aquí con su enlace a Ads Manager.</p>`;
+}
+
+/* ---------- Rendimiento ---------- */
+async function loadPerf(){
+  const btn=$("#perf-load"), st=$("#perf-status"), body=$("#perf-body");
+  const accs=S.accounts.filter(a=>a.is_queryable && a.is_ads_mcp_enabled && a.account_status==="ACTIVE");
+  if(!accs.length){ st.textContent="No hay cuentas para revisar."; return; }
+  btn.disabled=true; const rows=[]; let done=0;
+  const draw=()=>{
+    rows.sort((x,y)=>y.spend-x.spend);
+    body.innerHTML=rows.map(r=>{
+      const cls=r.err?"n":(r.cpr==null?"n":r.cpr<=0.8?"g":r.cpr<=1.44?"y":"r");
+      return `<tr><td><span class="sev ${cls}"></span>${esc(r.name)}</td><td class="num">${r.err?"—":r.n}</td><td class="num">${r.err?"—":money(r.spend)}</td><td class="num">${r.err?"—":r.res}</td><td class="num">${r.cpr==null?"—":money(r.cpr)}</td><td>${r.err?`<span class="muted">${esc(r.err)}</span>`:(r.worst?esc(r.worst):"")}</td></tr>`;
+    }).join("");
+    st.innerHTML=done<accs.length?`<span class="spin"></span> Revisadas ${done} de ${accs.length} cuentas…`:`Revisadas ${accs.length} cuentas · Gasto total: USD <b class="mono">${money(rows.reduce((s,r)=>s+r.spend,0))}</b>`;
+  };
+  draw();
+  const queue=accs.slice();
+  async function worker(){
+    while(queue.length){
+      const a=queue.shift();
+      try{
+        const p=await meta("ads_get_ad_entities",{ad_account_id:a.ad_account_id,level:"campaign",date_preset:"last_7d",fields:["id","name","effective_status","amount_spent","results","cost_per_result"],
+          filtering:[{field:"campaign.effective_status",operator:"IN",value:["ACTIVE"]}],include_additional_context:false,advertiser_request:"ver cómo van las pautas"});
+        const ents=arr(p,["ad_entities"]);
+        let spend=0,res=0,worst=null,worstC=0;
+        ents.forEach(e=>{
+          const s=parseFloat(e.amount_spent&&e.amount_spent.value)||0; spend+=s;
+          const rv=e.results&&e.results.values&&e.results.values[0]?parseFloat(e.results.values[0].value)||0:0; res+=rv;
+          const cpr=parseFloat(e.cost_per_result&&e.cost_per_result.value);
+          if(!isNaN(cpr)&&rv>=5&&cpr>worstC){ worstC=cpr; worst=`${e.name} · USD ${money(cpr)}`; }
+        });
+        if(ents.length) rows.push({name:a.ad_account_name,n:ents.length,spend,res,cpr:res?spend/res:null,worst:worstC>1.44?worst:""});
+      }catch(e){ rows.push({name:a.ad_account_name,spend:0,err:errText(e)}); }
+      done++; draw();
+    }
+  }
+  await Promise.all([worker(),worker(),worker()]);
+  if(!rows.length) body.innerHTML=`<tr><td colspan="6" class="muted">Ninguna cuenta tiene campañas activas esta semana.</td></tr>`;
+  btn.disabled=false; btn.textContent="Actualizar";
+}
+
+/* ---------- Tabs ---------- */
+const tabs={new:"#view-new",perf:"#view-perf",hist:"#view-hist"};
+Object.keys(tabs).forEach(k=>{ $("#tab-"+k).onclick=()=>{ Object.entries(tabs).forEach(([kk,sel])=>{ $(sel).hidden=kk!==k; $("#tab-"+kk).setAttribute("aria-selected",kk===k); }); if(k==="hist") renderHist(); try{localStorage.setItem("4r-tab",k)}catch(e){} }; });
+$("#perf-load").onclick=loadPerf;
+
+boot();
+})();
+</script>
