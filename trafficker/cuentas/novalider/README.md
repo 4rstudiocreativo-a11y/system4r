@@ -1,8 +1,7 @@
 # Novalider
 
-Cuentas publicitarias de este cliente, por sede y marca. Fuente: `trafficker/portafolio.json`.
+Cuentas de este cliente. Fuente: `trafficker/portafolio.json`.
 
-### Ecuador
 **Novalider**
 
 - Cuenta principal — Novalider (`7549422718480513`)

@@ -136,7 +136,7 @@ td.num{text-align:right;font-family:var(--mono);font-variant-numeric:tabular-num
   <section id="view-perf" hidden>
     <div class="panel">
       <div class="actions">
-        <div><h2>Rendimiento de los últimos 7 días</h2><p class="muted">Campañas activas por cliente › sede › marca, con subtotales. Verde: costo por resultado de USD 0,80 o menos · Amarillo: hasta USD 1,44 · Rojo: más de USD 1,44.</p></div>
+        <div><h2>Rendimiento de los últimos 7 días</h2><p class="muted">Campañas activas por cliente › sede › marca, con subtotales. Los totales de cada cliente no incluyen las cuentas de awareness. Verde: costo por resultado de USD 0,80 o menos · Amarillo: hasta USD 1,44 · Rojo: más de USD 1,44.</p></div>
         <button class="btn primary" id="perf-load">Cargar todas las cuentas</button>
       </div>
       <div id="perf-status" class="muted"></div>
@@ -169,10 +169,11 @@ const CITIES = [
   {name:"Santo Domingo", lat:-0.2530, lng:-79.1754, r:20},
   {name:"Ambato", lat:-1.2491, lng:-78.6168, r:20}
 ];
-const PORTFOLIO = [{"path": ["Grupo Roldán", "JTM", "Jetour"], "ids": ["1305706808328086", "625877685906143", "27130319863257751", "4598705777031478", "2134704717096087", "1956311601728732", "1681009754030421"]}, {"path": ["Grupo Roldán", "Vía a Daule", "Jetour"], "ids": ["935385195861603", "1056286320421708", "2667395257029172", "1552426876263723"]}, {"path": ["Grupo Roldán", "Vía a Daule", "JAC"], "ids": ["1067035569510370", "1756108082151993", "3558395907648019", "2054796318744018", "2471443403009428"]}, {"path": ["Grupo Roldán", "Vía a Daule", "Por confirmar"], "ids": ["2452455061924055", "1398259645702569"]}, {"path": ["Grupo Roldán", "Vía al Pan", "Jetour"], "ids": ["1690358691535688", "1637283144024768"]}, {"path": ["Grupo Roldán", "Vía al Pan", "JAC"], "ids": ["571570031548555"]}, {"path": ["Grupo Roldán", "Samborondón (por confirmar)", "Jetour"], "ids": ["1321153150004857"]}, {"path": ["Grupo Roldán", "Samborondón (por confirmar)", "JAC"], "ids": ["2024362505107990"]}, {"path": ["Ecuasueña"], "ids": ["1925557718322169"]}, {"path": ["Novalider"], "ids": ["7549422718480513", "25645633605106409"]}, {"path": ["Automekano GYE", "Guayaquil"], "ids": ["760703753774715", "1042137505031793"]}, {"path": ["Automekano UIO", "Quito"], "ids": ["460655532222596", "1394741435832662", "1063812906077323", "2503822630121850"]}, {"path": ["Weichai"], "ids": ["1024411000650642"]}];
+const PORTFOLIO = [{"path": ["Grupo Roldán", "JTM", "Jetour"], "ids": ["1305706808328086", "625877685906143", "27130319863257751", "4598705777031478", "2134704717096087", "1956311601728732", "1681009754030421"]}, {"path": ["Grupo Roldán", "Vía a Daule", "Jetour"], "ids": ["935385195861603", "1056286320421708", "2667395257029172", "1552426876263723", "1398259645702569"]}, {"path": ["Grupo Roldán", "Vía a Daule", "JAC"], "ids": ["1067035569510370", "1756108082151993", "3558395907648019", "2054796318744018", "2471443403009428", "2452455061924055"]}, {"path": ["Grupo Roldán", "Vía al Pan", "Jetour"], "ids": ["1690358691535688", "1637283144024768"]}, {"path": ["Grupo Roldán", "Vía al Pan", "JAC"], "ids": ["571570031548555"]}, {"path": ["Grupo Roldán", "Awareness", "Jetour"], "ids": ["1321153150004857"], "aw": true}, {"path": ["Grupo Roldán", "Awareness", "JAC"], "ids": ["2024362505107990"], "aw": true}, {"path": ["Procar Ecuador"], "ids": ["1531652451508278"]}, {"path": ["Promax Motors"], "ids": ["1033945182865558"]}, {"path": ["Autodealer"], "ids": ["677779998570796", "1558983198482471"]}, {"path": ["Ecuasueña"], "ids": ["1925557718322169"]}, {"path": ["Novalider"], "ids": ["7549422718480513", "25645633605106409"]}, {"path": ["Automekano GYE"], "ids": ["760703753774715", "1042137505031793"]}, {"path": ["Automekano UIO"], "ids": ["460655532222596", "1394741435832662", "1063812906077323", "2503822630121850"]}, {"path": ["Weichai"], "ids": ["1024411000650642"]}];
 const PATH = {}; PORTFOLIO.forEach(g=>g.ids.forEach(id=>{PATH[id]=g.path;}));
 const CLIENTS = [...new Set(PORTFOLIO.map(g=>g.path[0]))];
 const pathOf = id => PATH[id] || ["Otros clientes"];
+const AW = new Set(PORTFOLIO.filter(g=>g.aw).flatMap(g=>g.ids));
 const STEPS = ["Cliente","Brief","Creativos","Textos con IA","Revisar y crear"];
 const $ = (s,el=document)=>el.querySelector(s);
 const esc = s => String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
@@ -288,7 +289,8 @@ function groupAccounts(accs){
 function vBrief(){
   const b=S.brief;
   const minB = Math.ceil((50/7)*0.8);
-  return `<div><h2>Cuéntame la pauta</h2><p class="muted">Campaña de WhatsApp para ${esc(S.account.ad_account_name)}. Con esto la IA escribe los textos.</p></div>
+  const awNote = AW.has(S.account.ad_account_id) ? `<p class="note warn">Esta es una cuenta de <b>awareness</b> (${esc(pathOf(S.account.ad_account_id).join(' › '))}). Este asistente arma campañas de conversaciones de WhatsApp; para una pauta de alcance pídesela al agente en el chat.</p>` : "";
+  return `${awNote}<div><h2>Cuéntame la pauta</h2><p class="muted">Campaña de WhatsApp para ${esc(S.account.ad_account_name)}. Con esto la IA escribe los textos.</p></div>
   <label class="f">¿Qué vendemos? <small>Modelo y precio o entrada, si lo tienes</small><input type="text" id="b-product" value="${esc(b.product)}" placeholder="Jetour X50 desde USD 21.990, entrada desde USD 4.000"></label>
   <label class="f">Oferta o gancho <small>Opcional. Solo si es real</small><input type="text" id="b-offer" value="${esc(b.offer)}" placeholder="Bono de USD 1.000 hasta el 31 de octubre"></label>
   <label class="f">¿Quién es el cliente ideal? <small>Opcional</small><input type="text" id="b-ideal" value="${esc(b.ideal)}" placeholder="Familias que buscan su primera SUV, contado o crédito"></label>
@@ -598,10 +600,10 @@ async function loadPerf(){
   if(!accs.length){ st.textContent="No hay cuentas para revisar."; return; }
   btn.disabled=true; const rows=[]; let done=0;
   const draw=()=>{
-    const sevOf=r=>r.err?"n":(r.cpr==null?"n":r.cpr<=0.8?"g":r.cpr<=1.44?"y":"r");
-    const row=r=>`<tr><td class="ind"><span class="sev ${sevOf(r)}"></span>${esc(r.name)}</td><td class="num">${r.err?"—":r.n}</td><td class="num">${r.err?"—":money(r.spend)}</td><td class="num">${r.err?"—":r.res}</td><td class="num">${r.cpr==null?"—":money(r.cpr)}</td><td>${r.err?`<span class="muted">${esc(r.err)}</span>`:(r.worst?esc(r.worst):"")}</td></tr>`;
-    const tot=list=>{const sp=list.reduce((a,r)=>a+(r.spend||0),0), rs=list.reduce((a,r)=>a+(r.res||0),0); return {spend:sp,res:rs,cpr:rs?sp/rs:null,n:list.reduce((a,r)=>a+(r.n||0),0)};};
-    const sumRow=(cls,label,t)=>`<tr class="${cls}"><td><span class="sev ${sevOf(t)}"></span>${label}</td><td class="num">${t.n}</td><td class="num">${money(t.spend)}</td><td class="num">${t.res}</td><td class="num">${t.cpr==null?"—":money(t.cpr)}</td><td></td></tr>`;
+    const sevOf=r=>r.aw?"n":r.err?"n":(r.cpr==null?"n":r.cpr<=0.8?"g":r.cpr<=1.44?"y":"r");
+    const row=r=>`<tr><td class="ind"><span class="sev ${sevOf(r)}"></span>${esc(r.name)}</td><td class="num">${r.err?"—":r.n}</td><td class="num">${r.err?"—":money(r.spend)}</td><td class="num">${r.err?"—":r.res}</td><td class="num">${AW.has(r.id)?"alcance":(r.cpr==null?"—":money(r.cpr))}</td><td>${r.err?`<span class="muted">${esc(r.err)}</span>`:(r.worst?esc(r.worst):"")}</td></tr>`;
+    const tot=all=>{const allAw=all.every(r=>AW.has(r.id)); const list=allAw?all:all.filter(r=>!AW.has(r.id)); if(allAw) return {aw:true,spend:all.reduce((a,r)=>a+(r.spend||0),0),res:"—",cpr:null,n:all.reduce((a,r)=>a+(r.n||0),0)}; const sp=list.reduce((a,r)=>a+(r.spend||0),0), rs=list.reduce((a,r)=>a+(r.res||0),0); return {spend:sp,res:rs,cpr:rs?sp/rs:null,n:list.reduce((a,r)=>a+(r.n||0),0)};};
+    const sumRow=(cls,label,t)=>`<tr class="${cls}"><td><span class="sev ${sevOf(t)}"></span>${label}</td><td class="num">${t.n}</td><td class="num">${money(t.spend)}</td><td class="num">${t.res}</td><td class="num">${t.aw?"alcance":(t.cpr==null?"—":money(t.cpr))}</td><td>${t.aw?'<span class="muted">Awareness: se mide por alcance, no por costo por conversación</span>':""}</td></tr>`;
     let html="";
     [...CLIENTS,"Otros clientes"].forEach(cli=>{
       const cr=rows.filter(r=>pathOf(r.id)[0]===cli); if(!cr.length) return;

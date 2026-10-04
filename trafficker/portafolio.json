@@ -10,61 +10,249 @@
           "sede": "JTM",
           "nota": "Jetour Juan Tancamarengo",
           "marcas": [
-            {"marca": "Jetour", "cuentas": [
-              {"id": "1305706808328086", "nombre": "JTM - Nelly - Grupo Roldán", "asesor": "Nelly"},
-              {"id": "625877685906143", "nombre": "JTM - Marco - Grupo Roldán", "asesor": "Marco"},
-              {"id": "27130319863257751", "nombre": "JTM - Juanita - Grupo Roldán", "asesor": "Juanita"},
-              {"id": "4598705777031478", "nombre": "JTM - Katrina - Grupo Roldán", "asesor": "Katrina"},
-              {"id": "2134704717096087", "nombre": "JTM - Josseline - Grupo Roldán", "asesor": "Josseline"},
-              {"id": "1956311601728732", "nombre": "JTM - Shaina - Grupo Roldán", "asesor": "Shaina"},
-              {"id": "1681009754030421", "nombre": "JTM MKT", "asesor": "Cuenta de la sede", "estado": "Deshabilitada por actividad inusual"}
-            ]}
+            {
+              "marca": "Jetour",
+              "cuentas": [
+                {
+                  "id": "1305706808328086",
+                  "nombre": "JTM - Nelly - Grupo Roldán",
+                  "asesor": "Nelly"
+                },
+                {
+                  "id": "625877685906143",
+                  "nombre": "JTM - Marco - Grupo Roldán",
+                  "asesor": "Marco"
+                },
+                {
+                  "id": "27130319863257751",
+                  "nombre": "JTM - Juanita - Grupo Roldán",
+                  "asesor": "Juanita"
+                },
+                {
+                  "id": "4598705777031478",
+                  "nombre": "JTM - Katrina - Grupo Roldán",
+                  "asesor": "Katrina"
+                },
+                {
+                  "id": "2134704717096087",
+                  "nombre": "JTM - Josseline - Grupo Roldán",
+                  "asesor": "Josseline"
+                },
+                {
+                  "id": "1956311601728732",
+                  "nombre": "JTM - Shaina - Grupo Roldán",
+                  "asesor": "Shaina"
+                },
+                {
+                  "id": "1681009754030421",
+                  "nombre": "JTM MKT",
+                  "asesor": "Cuenta de la sede",
+                  "estado": "Deshabilitada por actividad inusual"
+                }
+              ]
+            }
           ]
         },
         {
           "sede": "Vía a Daule",
           "marcas": [
-            {"marca": "Jetour", "cuentas": [
-              {"id": "935385195861603", "nombre": "Jetour Via a Daule", "asesor": "Cuenta de la sede"},
-              {"id": "1056286320421708", "nombre": "Joselin MKT", "asesor": "Joselin Lua"},
-              {"id": "2667395257029172", "nombre": "Xiomara Jetour", "asesor": "Xiomara"},
-              {"id": "1552426876263723", "nombre": "Jimmy MKT", "asesor": "Jimmy"}
-            ]},
-            {"marca": "JAC", "cuentas": [
-              {"id": "1067035569510370", "nombre": "Jac Via a Daule", "asesor": "Cuenta de la sede"},
-              {"id": "1756108082151993", "nombre": "Bolivar Jac", "asesor": "Bolívar", "estado": "MCP aún no habilitado por Meta; sin método de pago"},
-              {"id": "3558395907648019", "nombre": "Jhon Jac", "asesor": "Jhon"},
-              {"id": "2054796318744018", "nombre": "Fatima MKT", "asesor": "Fátima", "nota": "Camiones JAC"},
-              {"id": "2471443403009428", "nombre": "CP - AUTOS GIGI", "asesor": "Gilda", "nota": "Frison T8/T6 (línea JAC)"}
-            ]},
-            {"marca": "Por confirmar", "cuentas": [
-              {"id": "2452455061924055", "nombre": "Marthita MKT", "asesor": "Martita", "estado": "MCP aún no habilitado por Meta"},
-              {"id": "1398259645702569", "nombre": "Kristhel MKT", "asesor": "Kristel", "estado": "MCP aún no habilitado por Meta"}
-            ]}
+            {
+              "marca": "Jetour",
+              "cuentas": [
+                {
+                  "id": "935385195861603",
+                  "nombre": "Jetour Via a Daule",
+                  "asesor": "Cuenta de la sede"
+                },
+                {
+                  "id": "1056286320421708",
+                  "nombre": "Joselin MKT",
+                  "asesor": "Joselin Lua"
+                },
+                {
+                  "id": "2667395257029172",
+                  "nombre": "Xiomara Jetour",
+                  "asesor": "Xiomara"
+                },
+                {
+                  "id": "1552426876263723",
+                  "nombre": "Jimmy MKT",
+                  "asesor": "Jimmy"
+                },
+                {
+                  "id": "1398259645702569",
+                  "nombre": "Kristhel MKT",
+                  "asesor": "Kristel",
+                  "estado": "MCP aún no habilitado por Meta"
+                }
+              ]
+            },
+            {
+              "marca": "JAC",
+              "cuentas": [
+                {
+                  "id": "1067035569510370",
+                  "nombre": "Jac Via a Daule",
+                  "asesor": "Cuenta de la sede"
+                },
+                {
+                  "id": "1756108082151993",
+                  "nombre": "Bolivar Jac",
+                  "asesor": "Bolívar",
+                  "estado": "MCP aún no habilitado por Meta; sin método de pago"
+                },
+                {
+                  "id": "3558395907648019",
+                  "nombre": "Jhon Jac",
+                  "asesor": "Jhon"
+                },
+                {
+                  "id": "2054796318744018",
+                  "nombre": "Fatima MKT",
+                  "asesor": "Fátima",
+                  "nota": "Camiones JAC"
+                },
+                {
+                  "id": "2471443403009428",
+                  "nombre": "CP - AUTOS GIGI",
+                  "asesor": "Gilda",
+                  "nota": "Frison T8/T6 (línea JAC)"
+                },
+                {
+                  "id": "2452455061924055",
+                  "nombre": "Marthita MKT",
+                  "asesor": "Martita",
+                  "estado": "MCP aún no habilitado por Meta"
+                }
+              ]
+            }
           ]
         },
         {
           "sede": "Vía al Pan",
           "marcas": [
-            {"marca": "Jetour", "cuentas": [
-              {"id": "1690358691535688", "nombre": "Josselyn GR", "asesor": "Joselyn"},
-              {"id": "1637283144024768", "nombre": "Jannethe MKT", "asesor": "Janneth"}
-            ]},
-            {"marca": "JAC", "cuentas": [
-              {"id": "571570031548555", "nombre": "Samantha Ramirez", "asesor": "Samantha", "nota": "JAC T8 / Frison T6; también campañas Karry de Janneth"}
-            ]}
+            {
+              "marca": "Jetour",
+              "cuentas": [
+                {
+                  "id": "1690358691535688",
+                  "nombre": "Josselyn GR",
+                  "asesor": "Joselyn"
+                },
+                {
+                  "id": "1637283144024768",
+                  "nombre": "Jannethe MKT",
+                  "asesor": "Janneth"
+                }
+              ]
+            },
+            {
+              "marca": "JAC",
+              "cuentas": [
+                {
+                  "id": "571570031548555",
+                  "nombre": "Samantha Ramirez",
+                  "asesor": "Samantha",
+                  "nota": "JAC T8 / Frison T6; también campañas Karry de Janneth"
+                }
+              ]
+            }
           ]
         },
         {
-          "sede": "Samborondón (por confirmar)",
-          "nota": "Mismo patrón de nombre que las cuentas de sede de Vía a Daule. Confirmar si es de Grupo Roldán.",
+          "sede": "Awareness",
+          "tipo": "awareness",
+          "nota": "Cuentas de marca para pautas de reconocimiento (alcance). No se evalúan por costo por conversación.",
           "marcas": [
-            {"marca": "Jetour", "cuentas": [
-              {"id": "1321153150004857", "nombre": "Jetour Samborondón", "asesor": "Cuenta de la sede"}
-            ]},
-            {"marca": "JAC", "cuentas": [
-              {"id": "2024362505107990", "nombre": "Jac Samborondón", "asesor": "Cuenta de la sede"}
-            ]}
+            {
+              "marca": "Jetour",
+              "cuentas": [
+                {
+                  "id": "1321153150004857",
+                  "nombre": "Jetour Samborondón",
+                  "asesor": "Cuenta de marca (awareness)"
+                }
+              ]
+            },
+            {
+              "marca": "JAC",
+              "cuentas": [
+                {
+                  "id": "2024362505107990",
+                  "nombre": "Jac Samborondón",
+                  "asesor": "Cuenta de marca (awareness)"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "cliente": "Procar Ecuador",
+      "carpeta": "procar",
+      "sedes": [
+        {
+          "sede": "Ecuador",
+          "marcas": [
+            {
+              "marca": "Procar Ecuador",
+              "cuentas": [
+                {
+                  "id": "1531652451508278",
+                  "nombre": "Procar Ecuador",
+                  "asesor": "Cuenta de la empresa"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "cliente": "Promax Motors",
+      "carpeta": "promax",
+      "sedes": [
+        {
+          "sede": "Ecuador",
+          "marcas": [
+            {
+              "marca": "Promax Motors",
+              "cuentas": [
+                {
+                  "id": "1033945182865558",
+                  "nombre": "Publicidad para Promax",
+                  "asesor": "Cuenta de la empresa"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "cliente": "Autodealer",
+      "carpeta": "autodealer",
+      "sedes": [
+        {
+          "sede": "Ecuador",
+          "marcas": [
+            {
+              "marca": "Autodealer",
+              "cuentas": [
+                {
+                  "id": "677779998570796",
+                  "nombre": "Autodealerec",
+                  "asesor": "Cuenta principal"
+                },
+                {
+                  "id": "1558983198482471",
+                  "nombre": "AutoDealer MKT",
+                  "asesor": "Cuenta secundaria",
+                  "estado": "Sin método de pago"
+                }
+              ]
+            }
           ]
         }
       ]
@@ -72,42 +260,253 @@
     {
       "cliente": "Ecuasueña",
       "carpeta": "ecuasuena",
-      "sedes": [{"sede": "Ecuador", "marcas": [{"marca": "Ecuasueña", "cuentas": [
-        {"id": "1925557718322169", "nombre": "Ecuasueña ads", "asesor": "Cuenta de la marca"}
-      ]}]}]
+      "sedes": [
+        {
+          "sede": "Ecuador",
+          "marcas": [
+            {
+              "marca": "Ecuasueña",
+              "cuentas": [
+                {
+                  "id": "1925557718322169",
+                  "nombre": "Ecuasueña ads",
+                  "asesor": "Cuenta de la marca"
+                }
+              ]
+            }
+          ]
+        }
+      ]
     },
     {
       "cliente": "Novalider",
       "carpeta": "novalider",
-      "sedes": [{"sede": "Ecuador", "marcas": [{"marca": "Novalider", "cuentas": [
-        {"id": "7549422718480513", "nombre": "Novalider", "asesor": "Cuenta principal"},
-        {"id": "25645633605106409", "nombre": "Novalider (2)", "asesor": "Cuenta secundaria"}
-      ]}]}]
+      "sedes": [
+        {
+          "sede": "Ecuador",
+          "marcas": [
+            {
+              "marca": "Novalider",
+              "cuentas": [
+                {
+                  "id": "7549422718480513",
+                  "nombre": "Novalider",
+                  "asesor": "Cuenta principal"
+                },
+                {
+                  "id": "25645633605106409",
+                  "nombre": "Novalider (2)",
+                  "asesor": "Cuenta secundaria"
+                }
+              ]
+            }
+          ]
+        }
+      ]
     },
     {
       "cliente": "Automekano GYE",
       "carpeta": "automekano-gye",
-      "sedes": [{"sede": "Guayaquil", "marcas": [{"marca": "Dongfeng y otras", "cuentas": [
-        {"id": "760703753774715", "nombre": "AUTOMEKANO MKT", "asesor": "Cuenta de la sede (varios asesores)"},
-        {"id": "1042137505031793", "nombre": "Automekano 2", "asesor": "Cuenta secundaria", "estado": "Sin método de pago"}
-      ]}]}]
+      "sedes": [
+        {
+          "sede": "Guayaquil",
+          "marcas": [
+            {
+              "marca": "Dongfeng y otras",
+              "cuentas": [
+                {
+                  "id": "760703753774715",
+                  "nombre": "AUTOMEKANO MKT",
+                  "asesor": "Cuenta de la sede (varios asesores)"
+                },
+                {
+                  "id": "1042137505031793",
+                  "nombre": "Automekano 2",
+                  "asesor": "Cuenta secundaria",
+                  "estado": "Sin método de pago"
+                }
+              ]
+            }
+          ]
+        }
+      ]
     },
     {
       "cliente": "Automekano UIO",
       "carpeta": "automekano-uio",
-      "sedes": [{"sede": "Quito", "marcas": [{"marca": "Dongfeng y otras", "cuentas": [
-        {"id": "460655532222596", "nombre": "Majo Automekano Quito", "asesor": "Majo"},
-        {"id": "1394741435832662", "nombre": "Tannia Automekano Uio", "asesor": "Tannia"},
-        {"id": "1063812906077323", "nombre": "Andres MKT", "asesor": "Andrés"},
-        {"id": "2503822630121850", "nombre": "Miguel Automekano Uio", "asesor": "Miguel", "estado": "Saldo pendiente (UNSETTLED)"}
-      ]}]}]
+      "sedes": [
+        {
+          "sede": "Quito",
+          "marcas": [
+            {
+              "marca": "Dongfeng y otras",
+              "cuentas": [
+                {
+                  "id": "460655532222596",
+                  "nombre": "Majo Automekano Quito",
+                  "asesor": "Majo"
+                },
+                {
+                  "id": "1394741435832662",
+                  "nombre": "Tannia Automekano Uio",
+                  "asesor": "Tannia"
+                },
+                {
+                  "id": "1063812906077323",
+                  "nombre": "Andres MKT",
+                  "asesor": "Andrés"
+                },
+                {
+                  "id": "2503822630121850",
+                  "nombre": "Miguel Automekano Uio",
+                  "asesor": "Miguel",
+                  "estado": "Saldo pendiente (UNSETTLED)"
+                }
+              ]
+            }
+          ]
+        }
+      ]
     },
     {
       "cliente": "Weichai",
       "carpeta": "weichai",
-      "sedes": [{"sede": "Ecuador", "marcas": [{"marca": "Weichai", "cuentas": [
-        {"id": "1024411000650642", "nombre": "Weichai MKT", "asesor": "Cuenta de la marca"}
-      ]}]}]
+      "sedes": [
+        {
+          "sede": "Ecuador",
+          "marcas": [
+            {
+              "marca": "Weichai",
+              "cuentas": [
+                {
+                  "id": "1024411000650642",
+                  "nombre": "Weichai MKT",
+                  "asesor": "Cuenta de la marca"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "sin_asignar": [
+    {
+      "id": "936060955777019",
+      "nombre": "Leslie Sornoza Asesora",
+      "estado": "✅"
+    },
+    {
+      "id": "360236945386143",
+      "nombre": "Bruval",
+      "estado": "✅"
+    },
+    {
+      "id": "905400265745323",
+      "nombre": "Beatriz MKT",
+      "estado": "✅"
+    },
+    {
+      "id": "1537398964401323",
+      "nombre": "Marketing 4R",
+      "estado": "✅",
+      "nota": "Cuenta propia de la agencia"
+    },
+    {
+      "id": "25768625316172912",
+      "nombre": "Pautas Scarlet MG",
+      "estado": "✅"
+    },
+    {
+      "id": "2068733140581296",
+      "nombre": "JESSICA MKT",
+      "estado": "✅"
+    },
+    {
+      "id": "1317030393915792",
+      "nombre": "Elizabeth MKT",
+      "estado": "✅"
+    },
+    {
+      "id": "1620288102374418",
+      "nombre": "TreeHouse MKT",
+      "estado": "✅"
+    },
+    {
+      "id": "1533986655133128",
+      "nombre": "Kleber MKT",
+      "estado": "✅"
+    },
+    {
+      "id": "1732915674396968",
+      "nombre": "Carolina Galarmobil",
+      "estado": "✅"
+    },
+    {
+      "id": "1013948934973288",
+      "nombre": "Marcos Galarza Jetour",
+      "estado": "✅"
+    },
+    {
+      "id": "1346842247615328",
+      "nombre": "Gaby Chery",
+      "estado": "⚠️",
+      "nota": "Sin método de pago"
+    },
+    {
+      "id": "1276345507571638",
+      "nombre": "Carlos Mkt",
+      "estado": "✅"
+    },
+    {
+      "id": "1633813114844502",
+      "nombre": "Taty Chevrolet",
+      "estado": "✅"
+    },
+    {
+      "id": "1641365077628841",
+      "nombre": "Kevin Villafuerte",
+      "estado": "⚠️",
+      "nota": "Sin método de pago"
+    },
+    {
+      "id": "938634282264696",
+      "nombre": "Vivianna LAVCA",
+      "estado": "🕒"
+    },
+    {
+      "id": "1009151458517313",
+      "nombre": "Gaby Mkt",
+      "estado": "🕒"
+    },
+    {
+      "id": "1258968572826500",
+      "nombre": "FATIMA DFSK",
+      "estado": "⚠️",
+      "nota": "UNSETTLED, no consultable"
+    },
+    {
+      "id": "1223812966301118",
+      "nombre": "Arrozito",
+      "estado": "⛔",
+      "nota": "Deshabilitada por actividad inusual"
+    },
+    {
+      "id": "1600837898240897",
+      "nombre": "Elvia MKT",
+      "estado": "⚠️",
+      "nota": "Sin método de pago"
+    },
+    {
+      "id": "1072460625475008",
+      "nombre": "Paulina Gmobil",
+      "estado": "⛔",
+      "nota": "Cerrada"
+    },
+    {
+      "id": "1054948053623371",
+      "nombre": "Rodrigo MKT (Fuso Uio)",
+      "estado": "✅"
     }
   ]
 }

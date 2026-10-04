@@ -1,8 +1,7 @@
 # Automekano UIO
 
-Cuentas publicitarias de este cliente, por sede y marca. Fuente: `trafficker/portafolio.json`.
+Cuentas de este cliente. Fuente: `trafficker/portafolio.json`.
 
-### Quito
 **Dongfeng y otras**
 
 - Majo — Majo Automekano Quito (`460655532222596`)

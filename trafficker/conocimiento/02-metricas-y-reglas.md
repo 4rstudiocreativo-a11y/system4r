@@ -59,3 +59,9 @@ Nunca apagar el **último** anuncio con entrega de un conjunto sin tener reempla
 Pedir a cada asesor/cliente, semanalmente: conversaciones recibidas, calificadas (preguntaron precio/cuota y dieron datos), citas/visitas, ventas.
 - **Costo por calificado** = gasto / calificados. Objetivo: ≤ 4 × costo por conversación.
 - **Tasa de calificación** < 25% → problema de público/anuncio, no de presupuesto.
+
+## Cuentas de awareness
+Las cuentas marcadas como `"tipo": "awareness"` en `trafficker/portafolio.json` (hoy: Grupo Roldán › Awareness › Jetour Samborondón y Jac Samborondón) hacen pautas de **reconocimiento**. No se les aplican las reglas de costo por conversación. Se evalúan por:
+- CPM: referencia propia USD 0,21 – 0,23 (Jac Samborondón y la campaña de alcance de Novalider, oct-2026). Revisar si pasa de USD 1. También alcance único y frecuencia semanal de 1,5 a 3.
+- ThruPlay / reproducciones de 3 s si el creativo es video.
+No se suman a los totales de conversaciones del cliente.

@@ -1,10 +1,13 @@
 # Portafolio 4R por cliente
 
-Estructura: **cliente › sede › marca › cuenta**. Fuente de verdad: `trafficker/portafolio.json` (la usa también el panel 4R Pautas).
-Las fichas de cada asesor viven en la carpeta de su marca: `cuentas/<cliente>/<sede>/<marca>/<asesor>.md`. Se crean al auditar o pautar esa cuenta (plantilla: `_plantilla.md`).
+Estructura: **cliente › sede › marca › cuenta**. Fuente de verdad: `trafficker/portafolio.json` (la usan el agente y el panel 4R Pautas). Para cambiarla, edita el JSON y corre `python3 trafficker/scripts/generar_portafolio.py`.
+
+Las fichas de cada asesor viven en `cuentas/<cliente>/<sede>/<marca>/<asesor>.md` (clientes de una sola sede: `cuentas/<cliente>/<asesor>.md`). Plantilla: `_plantilla.md`.
 
 ## Grupo Roldán
+
 ### JTM — Jetour Juan Tancamarengo
+
 **Jetour**
 
 | Asesor | Cuenta | ID | Estado / nota |
@@ -18,6 +21,7 @@ Las fichas de cada asesor viven en la carpeta de su marca: `cuentas/<cliente>/<s
 | Cuenta de la sede | JTM MKT | 1681009754030421 | Deshabilitada por actividad inusual |
 
 ### Vía a Daule
+
 **Jetour**
 
 | Asesor | Cuenta | ID | Estado / nota |
@@ -26,6 +30,7 @@ Las fichas de cada asesor viven en la carpeta de su marca: `cuentas/<cliente>/<s
 | Joselin Lua | Joselin MKT | 1056286320421708 | — |
 | Xiomara | Xiomara Jetour | 2667395257029172 | — |
 | Jimmy | Jimmy MKT | 1552426876263723 | — |
+| Kristel | Kristhel MKT | 1398259645702569 | MCP aún no habilitado por Meta |
 
 **JAC**
 
@@ -36,15 +41,10 @@ Las fichas de cada asesor viven en la carpeta de su marca: `cuentas/<cliente>/<s
 | Jhon | Jhon Jac | 3558395907648019 | — |
 | Fátima | Fatima MKT | 2054796318744018 | Camiones JAC |
 | Gilda | CP - AUTOS GIGI | 2471443403009428 | Frison T8/T6 (línea JAC) |
-
-**Por confirmar**
-
-| Asesor | Cuenta | ID | Estado / nota |
-|---|---|---|---|
 | Martita | Marthita MKT | 2452455061924055 | MCP aún no habilitado por Meta |
-| Kristel | Kristhel MKT | 1398259645702569 | MCP aún no habilitado por Meta |
 
 ### Vía al Pan
+
 **Jetour**
 
 | Asesor | Cuenta | ID | Estado / nota |
@@ -58,18 +58,44 @@ Las fichas de cada asesor viven en la carpeta de su marca: `cuentas/<cliente>/<s
 |---|---|---|---|
 | Samantha | Samantha Ramirez | 571570031548555 | JAC T8 / Frison T6; también campañas Karry de Janneth |
 
-### Samborondón (por confirmar) — Mismo patrón de nombre que las cuentas de sede de Vía a Daule. Confirmar si es de Grupo Roldán.
+### Awareness — Cuentas de marca para pautas de reconocimiento (alcance). No se evalúan por costo por conversación.
+
 **Jetour**
 
 | Asesor | Cuenta | ID | Estado / nota |
 |---|---|---|---|
-| Cuenta de la sede | Jetour Samborondón | 1321153150004857 | — |
+| Cuenta de marca (awareness) | Jetour Samborondón | 1321153150004857 | — |
 
 **JAC**
 
 | Asesor | Cuenta | ID | Estado / nota |
 |---|---|---|---|
-| Cuenta de la sede | Jac Samborondón | 2024362505107990 | — |
+| Cuenta de marca (awareness) | Jac Samborondón | 2024362505107990 | — |
+
+## Procar Ecuador
+
+**Procar Ecuador**
+
+| Asesor | Cuenta | ID | Estado / nota |
+|---|---|---|---|
+| Cuenta de la empresa | Procar Ecuador | 1531652451508278 | — |
+
+## Promax Motors
+
+**Promax Motors**
+
+| Asesor | Cuenta | ID | Estado / nota |
+|---|---|---|---|
+| Cuenta de la empresa | Publicidad para Promax | 1033945182865558 | — |
+
+## Autodealer
+
+**Autodealer**
+
+| Asesor | Cuenta | ID | Estado / nota |
+|---|---|---|---|
+| Cuenta principal | Autodealerec | 677779998570796 | — |
+| Cuenta secundaria | AutoDealer MKT | 1558983198482471 | Sin método de pago |
 
 ## Ecuasueña
 
@@ -122,9 +148,6 @@ Las fichas de cada asesor viven en la carpeta de su marca: `cuentas/<cliente>/<s
 |---|---|---|---|
 | Leslie Sornoza Asesora | 936060955777019 | ✅ |  |
 | Bruval | 360236945386143 | ✅ |  |
-| Autodealerec | 677779998570796 | ✅ |  |
-| AutoDealer MKT | 1558983198482471 | ⚠️ | Sin método de pago |
-| Procar Ecuador | 1531652451508278 | ✅ |  |
 | Beatriz MKT | 905400265745323 | ✅ |  |
 | Marketing 4R | 1537398964401323 | ✅ | Cuenta propia de la agencia |
 | Pautas Scarlet MG | 25768625316172912 | ✅ |  |
@@ -134,7 +157,6 @@ Las fichas de cada asesor viven en la carpeta de su marca: `cuentas/<cliente>/<s
 | Kleber MKT | 1533986655133128 | ✅ |  |
 | Carolina Galarmobil | 1732915674396968 | ✅ |  |
 | Marcos Galarza Jetour | 1013948934973288 | ✅ |  |
-| Publicidad para Promax | 1033945182865558 | ✅ |  |
 | Gaby Chery | 1346842247615328 | ⚠️ | Sin método de pago |
 | Carlos Mkt | 1276345507571638 | ✅ |  |
 | Taty Chevrolet | 1633813114844502 | ✅ |  |
