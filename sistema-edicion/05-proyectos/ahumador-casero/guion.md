@@ -1,40 +1,61 @@
-# Guion — Cómo hacer un ahumador casero improvisado
+# Guion v7 — Cómo hacer un ahumador casero (~37 s)
 
+- Tipo: vlog tutorial campestre.
 - Formato: pantalla completa con voz en off (9:16).
 - Voz: KEVFORTUNADOGORS (ver `02-marca/voz.md`).
-- Duración objetivo: ~45 s (~115 palabras).
-- Estado: BORRADOR. Escrito sin ver los clips; ajustar los pasos a lo que
-  muestran los 26 clips (`clips/`, en el Mac de Kevin) antes de generar la voz.
+- Estado: APROBADO por Kevin.
 
-## Texto para locutar
+## 1. Hook (0–4 s)
+- Visual: 4180, el señor de camiseta blanca riéndose; corte a ustedes cargando el zinc.
+- Voz: "Se rieron cuando dije que haría un ahumador casero con este zinc."
+- Texto: CÓMO HACER UN AHUMADOR CASERO 🔥
 
-**Gancho (0–4 s)**
-No necesitas comprar un ahumador. Con lo que tienes en casa puedes hacer uno hoy.
+## 2. Retención (4–5 s)
+- Visual: corte seco a 4209, la carne entre el humo, con sonido de chisporroteo.
+- Voz: "Mira cómo quedó."
 
-**Materiales (4–12 s)**
-Una olla vieja con tapa, papel aluminio, una rejilla y astillas de madera.
+## 3. Nudo: materiales (5–9 s)
+- Visual: tomas rápidas de 4174 (zinc), 4182 (aro), 4175 (alambre), 4185 (varillas), 4190 (leña).
+- Voz: "Necesitas: zinc, un aro de carro, alambre, dos varillas y leña."
+- Texto: zinc · aro · alambre · 2 varillas · leña, apareciendo uno por uno.
 
-**Paso 1 (12–20 s)**
-Forra el fondo con aluminio y pon un puñado de astillas encima.
+## 4. Problema y resolución: los pasos (9–26 s)
+1. Visual: 4178 y 4179 enrollando el zinc; 4187 y 4188 el alicate.
+   - Voz: "Uno: enrolla el zinc. Se va a abrir: amárralo con alambre."
+   - Texto: PASO 1 · ⚠️ SE ABRE → ✅ ALAMBRE
+2. Visual: 4182 y 4183, el aro en el fondo.
+   - Voz: "Dos: el aro al fondo. Ese es tu fogón."
+   - Texto: PASO 2 · ARO = FOGÓN
+3. Visual: 4184 y 4185 las varillas; 4209 los ganchos.
+   - Voz: "Tres: cruza dos varillas y cuelga la carne con ganchos."
+   - Texto: PASO 3 · ⚠️ CARNE AL FUEGO → ✅ GANCHOS
+4. Visual: 4192 y 4201, la leña humeando.
+   - Voz: "Cuatro: poca llama. Buscas humo, no fuego."
+   - Texto: PASO 4 · POCA LLAMA = MÁS SABOR
+5. Visual: 4203, la tapa puesta y los ladrillos.
+   - Voz: "Cinco: tapa arriba, ladrillos abajo para que respire."
+   - Texto: PASO 5 · TAPA + AIRE ABAJO
 
-**Paso 2 (20–27 s)**
-Coloca la rejilla, pon la carne, y tapa bien para que el humo no se escape.
+## 5. Remate cómico (26–32 s)
+- Visual: 4212, el humo saliendo a montones.
+- Voz: "Último paso: avisarle al barrio que hay carne…"
+- Pausa de un segundo. Visual: 4196, la gente sentada esperando.
+- Voz: "…ah no, el humo ya lo hizo."
+- Texto: ¿QUIÉN SE RÍE AHORA? 😏
 
-**Paso 3 (27–36 s)**
-Fuego bajo. Cuando empiece a salir humo, déjalo trabajar entre veinte y cuarenta minutos.
+## 6. Cierre fijo (32–37 s)
+- Visual: plano de ustedes frente al ahumador o saludando a cámara.
+- Voz: "Si te salieron estos Dogors de la suerte, síguelos para más contenido como este. ¡CHAO!"
+- Texto: SÍGUENOS 🔔 · ESCRÍBEME "AHUMADOR" Y TE PASO LAS MEDIDAS
 
-**Resultado (36–41 s)**
-Mira ese color. Sabor a parrilla, sin gastar en equipos.
-
-**Cierre / CTA (41–45 s)**
-Guárdalo para tu próxima parrillada, y sígueme para más trucos así.
-
-## Notas de seguridad (para texto en pantalla o mencionar)
-- Hacerlo en un lugar ventilado o al aire libre (el humo tiene monóxido de carbono).
-- Usar madera natural: nunca tratada, pintada ni barnizada.
-- No usar ollas de metal galvanizado.
-
-## Pendiente de Kevin
-- Confirmar que los pasos coinciden con los clips.
-- Duración final y CTA.
-- Si se mencionan las notas de seguridad en voz o solo en pantalla.
+## Solo lo que dice la voz
+1. Se rieron cuando dije que haría un ahumador casero con este zinc.
+2. Mira cómo quedó.
+3. Necesitas: zinc, un aro de carro, alambre, dos varillas y leña.
+4. Uno: enrolla el zinc. Se va a abrir: amárralo con alambre.
+5. Dos: el aro al fondo. Ese es tu fogón.
+6. Tres: cruza dos varillas y cuelga la carne con ganchos.
+7. Cuatro: poca llama. Buscas humo, no fuego.
+8. Cinco: tapa arriba, ladrillos abajo para que respire.
+9. Último paso: avisarle al barrio que hay carne… ah no, el humo ya lo hizo.
+10. Si te salieron estos Dogors de la suerte, síguelos para más contenido como este. ¡CHAO!
