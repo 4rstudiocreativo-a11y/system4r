@@ -12,8 +12,9 @@ fi
 brew install node ffmpeg whisper-cpp
 npm install -g hyperframes@0.8.191
 
-# Voz local de respaldo (Kokoro)
-python3 -m pip install --user kokoro-onnx soundfile
+# Voz local de respaldo (Kokoro). Opcional: si falla, se sigue igual.
+python3 -m pip install --user kokoro-onnx soundfile \
+  || echo "Aviso: Kokoro no se instaló (opcional, no hace falta para editar)."
 
 # Mover los clips de la carpeta vieja (video-01) a la del ahumador
 cd "$(dirname "$0")/05-proyectos"
