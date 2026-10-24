@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="es" data-composition-variables='[
+  {"id":"verde","type":"color","label":"Verde fosforescente","default":"#39FF14"},
+  {"id":"negro","type":"color","label":"Negro","default":"#000000"},
+  {"id":"blanco","type":"color","label":"Blanco","default":"#FFFFFF"}
+]'>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <script src="assets/vendor/gsap.min.js"></script>
+    <style>
+      :root {
+        --verde: #39FF14; --negro: #000000; --blanco: #FFFFFF;
+        /* Sequel demo no trae tildes, ñ ni números: Archivo Black hasta tener la versión completa */
+        --fuente-titulos: "Archivo Black", sans-serif;
+      }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { width: 1080px; height: 1920px; overflow: hidden; background: #000; }
+      #fondo { position: absolute; inset: 0; background: #000; }
+      .toma { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; object-fit: cover; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="37.0" data-width="1080" data-height="1920">
+      <div id="fondo"></div>
+      <video id="v00" class="clip toma" src="clips/IMG_4180.MOV" data-start="0.00" data-duration="2.00" data-media-start="0" data-track-index="0" muted playsinline></video>
+      <video id="v01" class="clip toma" src="clips/IMG_4174.MOV" data-start="2.00" data-duration="2.05" data-media-start="0" data-track-index="0" muted playsinline></video>
+      <video id="v02" class="clip toma" src="clips/IMG_4209.MOV" data-start="4.05" data-duration="1.98" data-media-start="0" data-track-index="0" data-has-audio="true" data-volume="0.5" playsinline></video>
+      <video id="v03" class="clip toma" src="clips/IMG_4174.MOV" data-start="6.03" data-duration="0.49" data-media-start="3" data-track-index="0" muted playsinline></video>
+      <video id="v04" class="clip toma" src="clips/IMG_4182.MOV" data-start="6.52" data-duration="0.83" data-media-start="0" data-track-index="0" muted playsinline></video>
+      <video id="v05" class="clip toma" src="clips/IMG_4175.MOV" data-start="7.35" data-duration="0.74" data-media-start="0" data-track-index="0" muted playsinline></video>
+      <video id="v06" class="clip toma" src="clips/IMG_4185.MOV" data-start="8.09" data-duration="0.66" data-media-start="0" data-track-index="0" muted playsinline></video>
+      <video id="v07" class="clip toma" src="clips/IMG_4190.MOV" data-start="8.75" data-duration="0.75" data-media-start="0" data-track-index="0" muted playsinline></video>
+      <video id="v08" class="clip toma" src="clips/IMG_4178.MOV" data-start="9.50" data-duration="1.25" data-media-start="0" data-track-index="0" muted playsinline></video>
+      <video id="v09" class="clip toma" src="clips/IMG_4179.MOV" data-start="10.75" data-duration="0.86" data-media-start="0" data-track-index="0" muted playsinline></video>
+      <video id="v10" class="clip toma" src="clips/IMG_4187.MOV" data-start="11.61" data-duration="1.01" data-media-start="0" data-track-index="0" muted playsinline></video>
+      <video id="v11" class="clip toma" src="clips/IMG_4188.MOV" data-start="12.62" data-duration="0.78" data-media-start="0" data-track-index="0" muted playsinline></video>
+      <video id="v12" class="clip toma" src="clips/IMG_4182.MOV" data-start="13.40" data-duration="1.71" data-media-start="3" data-track-index="0" muted playsinline></video>
+      <video id="v13" class="clip toma" src="clips/IMG_4183.MOV" data-start="15.11" data-duration="0.94" data-media-start="0" data-track-index="0" muted playsinline></video>
+      <video id="v14" class="clip toma" src="clips/IMG_4184.MOV" data-start="16.05" data-duration="0.84" data-media-start="0" data-track-index="0" muted playsinline></video>
+      <video id="v15" class="clip toma" src="clips/IMG_4185.MOV" data-start="16.89" data-duration="0.65" data-media-start="3" data-track-index="0" muted playsinline></video>
+      <video id="v16" class="clip toma" src="clips/IMG_4209.MOV" data-start="17.55" data-duration="2.05" data-media-start="6" data-track-index="0" muted playsinline></video>
+      <video id="v17" class="clip toma" src="clips/IMG_4192.MOV" data-start="19.60" data-duration="1.16" data-media-start="0" data-track-index="0" muted playsinline></video>
+      <video id="v18" class="clip toma" src="clips/IMG_4201.MOV" data-start="20.76" data-duration="1.74" data-media-start="0" data-track-index="0" muted playsinline></video>
+      <video id="v19" class="clip toma" src="clips/IMG_4203.MOV" data-start="22.50" data-duration="3.50" data-media-start="0" data-track-index="0" muted playsinline></video>
+      <video id="v20" class="clip toma" src="clips/IMG_4212.MOV" data-start="26.00" data-duration="2.90" data-media-start="0" data-track-index="0" muted playsinline></video>
+      <video id="v21" class="clip toma" src="clips/IMG_4196.MOV" data-start="28.90" data-duration="2.80" data-media-start="0" data-track-index="0" muted playsinline></video>
+      <video id="v22" class="clip toma" src="clips/IMG_4186.MOV" data-start="31.70" data-duration="5.30" data-media-start="0" data-track-index="0" muted playsinline></video>
+      <audio id="voz" class="clip" src="assets/voz.mp3" data-start="0" data-volume="1" data-track-index="3"></audio>
+      <audio id="sfx-00" class="clip" src="assets/sfx/whoosh-short.mp3" data-start="4.00" data-duration="0.57" data-volume="0.55" data-track-index="4"></audio>
+      <audio id="sfx-01" class="clip" src="assets/sfx/pop.mp3" data-start="6.05" data-duration="0.72" data-volume="0.5" data-track-index="5"></audio>
+      <audio id="sfx-02" class="clip" src="assets/sfx/click-soft.mp3" data-start="6.54" data-duration="0.37" data-volume="0.5" data-track-index="4"></audio>
+      <audio id="sfx-03" class="clip" src="assets/sfx/pop.mp3" data-start="7.37" data-duration="0.72" data-volume="0.5" data-track-index="5"></audio>
+      <audio id="sfx-04" class="clip" src="assets/sfx/click-soft.mp3" data-start="8.11" data-duration="0.37" data-volume="0.5" data-track-index="4"></audio>
+      <audio id="sfx-05" class="clip" src="assets/sfx/pop.mp3" data-start="8.77" data-duration="0.72" data-volume="0.5" data-track-index="5"></audio>
+      <audio id="sfx-06" class="clip" src="assets/sfx/whoosh.mp3" data-start="9.44" data-duration="0.57" data-volume="0.45" data-track-index="4"></audio>
+      <audio id="sfx-07" class="clip" src="assets/sfx/whoosh-short.mp3" data-start="13.34" data-duration="0.57" data-volume="0.45" data-track-index="5"></audio>
+      <audio id="sfx-08" class="clip" src="assets/sfx/whoosh.mp3" data-start="15.99" data-duration="0.57" data-volume="0.45" data-track-index="4"></audio>
+      <audio id="sfx-09" class="clip" src="assets/sfx/whoosh-short.mp3" data-start="19.54" data-duration="0.57" data-volume="0.45" data-track-index="5"></audio>
+      <audio id="sfx-10" class="clip" src="assets/sfx/whoosh.mp3" data-start="22.44" data-duration="0.57" data-volume="0.45" data-track-index="4"></audio>
+      <audio id="sfx-11" class="clip" src="assets/sfx/impact-bass-1.mp3" data-start="29.78" data-duration="2.12" data-volume="0.7" data-track-index="5"></audio>
+      <div id="textos" data-composition-id="textos" data-composition-src="compositions/textos.html"
+        data-start="0" data-duration="37.0" data-track-index="1" data-track-kind="graphics"
+        data-width="1080" data-height="1920" style="z-index: 50"></div>
+      <div id="subtitulos" data-composition-id="subtitulos" data-composition-src="compositions/subtitulos.html"
+        data-start="0" data-duration="37.0" data-track-index="2" data-track-kind="captions"
+        data-width="1080" data-height="1920" style="z-index: 60"></div>
+    </div>
+    <script>
+      window.__timelines = window.__timelines || {};
+      window.__timelines["main"] = gsap.timeline({ paused: true });
+    </script>
+  </body>
+</html>

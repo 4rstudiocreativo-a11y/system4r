@@ -1,0 +1,87 @@
+<template>
+  <style>
+    #root { position: absolute; inset: 0; font-family: var(--fuente-titulos); }
+    .bloque { position: absolute; left: 0; width: 100%; top: 250px; text-align: center; overflow: visible; }
+    .sombra, .hook-in, .paso-in, .remate-in, .cierre-in, .chips {
+      text-shadow: 0 4px 22px rgba(0,0,0,.6), 0 0 3px rgba(0,0,0,.5);
+    }
+    @font-face { font-family: "Emoji4R"; src: url("assets/fonts/emoji-subset.ttf"); }
+    .emo { font-family: "Emoji4R"; }
+    .hook-a { font-size: 58px; color: var(--blanco); letter-spacing: 1px; }
+    .hook-b { font-size: 92px; line-height: 1.02; color: var(--verde); padding: 0 70px; }
+    .chips { display: flex; flex-direction: column; align-items: center; gap: 18px; }
+    .chip {
+      font-size: 58px; color: var(--negro); background: var(--verde);
+      padding: 10px 34px 14px; border-radius: 18px; text-shadow: none;
+    }
+    .paso-n { font-size: 48px; color: var(--verde); letter-spacing: 4px; margin-bottom: 14px; }
+    .paso-t { font-size: 66px; line-height: 1.12; color: var(--blanco); padding: 0 80px; }
+    .paso-t .mal, .paso-t .bien { display: inline-block; }
+    .paso-t .bien { color: var(--verde); }
+    .remate-in { top: 0; font-size: 92px; line-height: 1.05; color: var(--verde); padding: 0 70px; }
+    .cierre-a { font-size: 96px; color: var(--verde); }
+    .cierre-b { margin-top: 26px; font-size: 50px; line-height: 1.2; color: var(--blanco); padding: 0 80px; }
+    .verde { color: var(--verde); }
+  </style>
+  <div id="root" data-composition-id="textos" data-width="1080" data-height="1920">
+    <div id="t-hook" class="clip bloque" data-start="0.15" data-duration="3.85">
+      <div class="hook-in"><div class="hook-a">CÓMO HACER UN</div><div class="hook-b">AHUMADOR CASERO <span class="emo">🔥</span></div></div>
+    </div>
+    <div id="t-mat" class="clip bloque" data-start="6.03" data-duration="3.42">
+      <div class="chips">
+      <div id="t-mat-0" class="chip">zinc</div>
+      <div id="t-mat-1" class="chip">aro</div>
+      <div id="t-mat-2" class="chip">alambre</div>
+      <div id="t-mat-3" class="chip">2 varillas</div>
+      <div id="t-mat-4" class="chip">leña</div>
+      </div>
+    </div>
+    <div id="t-p1" class="clip bloque" data-start="9.50" data-duration="3.85">
+      <div class="paso-in"><div class="paso-n">PASO 1</div><div class="paso-t"><span class="mal"><span class="emo">⚠️</span> SE ABRE</span> <span id="t-p1-b" class="bien">→ <span class="emo">✅</span> ALAMBRE</span></div></div>
+    </div>
+    <div id="t-p2" class="clip bloque" data-start="13.40" data-duration="2.60">
+      <div class="paso-in"><div class="paso-n">PASO 2</div><div class="paso-t"><span class="bien-solo">ARO = FOGÓN</span></div></div>
+    </div>
+    <div id="t-p3" class="clip bloque" data-start="16.05" data-duration="3.50">
+      <div class="paso-in"><div class="paso-n">PASO 3</div><div class="paso-t"><span class="mal"><span class="emo">⚠️</span> CARNE AL FUEGO</span> <span id="t-p3-b" class="bien">→ <span class="emo">✅</span> GANCHOS</span></div></div>
+    </div>
+    <div id="t-p4" class="clip bloque" data-start="19.60" data-duration="2.85">
+      <div class="paso-in"><div class="paso-n">PASO 4</div><div class="paso-t"><span class="bien-solo">POCA LLAMA = MÁS SABOR</span></div></div>
+    </div>
+    <div id="t-p5" class="clip bloque" data-start="22.50" data-duration="3.45">
+      <div class="paso-in"><div class="paso-n">PASO 5</div><div class="paso-t"><span class="bien-solo">TAPA + AIRE ABAJO</span></div></div>
+    </div>
+    <div id="t-remate" class="clip bloque" data-start="29.80" data-duration="1.85">
+      <div class="remate-in">¿QUIÉN SE RÍE AHORA? <span class="emo">😏</span></div>
+    </div>
+    <div id="t-cierre" class="clip bloque" data-start="31.70" data-duration="5.30">
+      <div class="cierre-in"><div class="cierre-a">SÍGUENOS <span class="emo">🔔</span></div><div class="cierre-b">ESCRÍBEME <span class="verde">“AHUMADOR”</span><br>Y TE PASO LAS MEDIDAS</div></div>
+    </div>
+  </div>
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    tl.fromTo("#t-hook .hook-a", {opacity: 0, y: 40}, {opacity: 1, y: 0, duration: 0.28, ease: "power4.out"}, 0.15);
+    tl.fromTo("#t-hook .hook-b", {opacity: 0, y: 40}, {opacity: 1, y: 0, duration: 0.28, ease: "power4.out"}, 0.30);
+    tl.fromTo("#t-mat-0", {opacity: 0, scale: 0.6}, {opacity: 1, scale: 1, duration: 0.22, ease: "back.out(2.2)"}, 6.05);
+    tl.fromTo("#t-mat-1", {opacity: 0, scale: 0.6}, {opacity: 1, scale: 1, duration: 0.22, ease: "back.out(2.2)"}, 6.54);
+    tl.fromTo("#t-mat-2", {opacity: 0, scale: 0.6}, {opacity: 1, scale: 1, duration: 0.22, ease: "back.out(2.2)"}, 7.37);
+    tl.fromTo("#t-mat-3", {opacity: 0, scale: 0.6}, {opacity: 1, scale: 1, duration: 0.22, ease: "back.out(2.2)"}, 8.11);
+    tl.fromTo("#t-mat-4", {opacity: 0, scale: 0.6}, {opacity: 1, scale: 1, duration: 0.22, ease: "back.out(2.2)"}, 8.77);
+    tl.fromTo("#t-p1 .paso-n", {opacity: 0, y: 30}, {opacity: 1, y: 0, duration: 0.28, ease: "power4.out"}, 9.50);
+    tl.fromTo("#t-p1 .paso-t", {opacity: 0, y: 40}, {opacity: 1, y: 0, duration: 0.28, ease: "power4.out"}, 9.62);
+    tl.fromTo("#t-p1-b", {opacity: 0, scale: 0.6}, {opacity: 1, scale: 1, duration: 0.22, ease: "back.out(2.2)"}, 12.30);
+    tl.fromTo("#t-p2 .paso-n", {opacity: 0, y: 30}, {opacity: 1, y: 0, duration: 0.28, ease: "power4.out"}, 13.40);
+    tl.fromTo("#t-p2 .paso-t", {opacity: 0, y: 40}, {opacity: 1, y: 0, duration: 0.28, ease: "power4.out"}, 13.52);
+    tl.fromTo("#t-p3 .paso-n", {opacity: 0, y: 30}, {opacity: 1, y: 0, duration: 0.28, ease: "power4.out"}, 16.05);
+    tl.fromTo("#t-p3 .paso-t", {opacity: 0, y: 40}, {opacity: 1, y: 0, duration: 0.28, ease: "power4.out"}, 16.17);
+    tl.fromTo("#t-p3-b", {opacity: 0, scale: 0.6}, {opacity: 1, scale: 1, duration: 0.22, ease: "back.out(2.2)"}, 17.60);
+    tl.fromTo("#t-p4 .paso-n", {opacity: 0, y: 30}, {opacity: 1, y: 0, duration: 0.28, ease: "power4.out"}, 19.60);
+    tl.fromTo("#t-p4 .paso-t", {opacity: 0, y: 40}, {opacity: 1, y: 0, duration: 0.28, ease: "power4.out"}, 19.72);
+    tl.fromTo("#t-p5 .paso-n", {opacity: 0, y: 30}, {opacity: 1, y: 0, duration: 0.28, ease: "power4.out"}, 22.50);
+    tl.fromTo("#t-p5 .paso-t", {opacity: 0, y: 40}, {opacity: 1, y: 0, duration: 0.28, ease: "power4.out"}, 22.62);
+    tl.fromTo("#t-remate .remate-in", {opacity: 0, scale: 0.6}, {opacity: 1, scale: 1, duration: 0.22, ease: "back.out(2.2)"}, 29.80);
+    tl.fromTo("#t-cierre .cierre-a", {opacity: 0, y: 40}, {opacity: 1, y: 0, duration: 0.28, ease: "power4.out"}, 31.80);
+    tl.fromTo("#t-cierre .cierre-b", {opacity: 0, y: 40}, {opacity: 1, y: 0, duration: 0.28, ease: "power4.out"}, 32.20);
+    window.__timelines["textos"] = tl;
+  </script>
+</template>

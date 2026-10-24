@@ -1,0 +1,11 @@
+01|Se rieron cuando dije que haría un ahumador casero con este zinc.
+02|Mira cómo quedó.
+03|Necesitas: zinc, un aro de carro, alambre, dos varillas y leña.
+04|Uno: enrolla el zinc. Se va a abrir: amárralo con alambre.
+05|Dos: el aro al fondo. Ese es tu fogón.
+06|Tres: cruza dos varillas y cuelga la carne con ganchos.
+07|Cuatro: poca llama. Buscas humo, no fuego.
+08|Cinco: tapa arriba, ladrillos abajo para que respire.
+09a|Último paso: avisarle al barrio que hay carne...
+09b|ah no, el humo ya lo hizo.
+10|Si te salieron estos Dogors de la suerte, síguelos para más contenido como este. ¡Chao!
