@@ -1,23 +1,18 @@
 # Reglas de marca — KevFortuna
 
-Pendiente de completar con Kevin. No inventar valores.
-
 ## Colores
-- Principal: (hex)
-- Secundario: (hex)
-- Acento: (hex)
-- Fondo: (hex)
+- Negro: `#000000`
+- Blanco: `#FFFFFF`
+- Verde fosforescente: (hex pendiente de confirmar con Kevin)
 
 ## Tipografías
-- Títulos: (nombre; archivo en `tipografias/`)
-- Texto / subtítulos: (nombre; archivo en `tipografias/`)
+- Sequel (variante y archivo pendientes; guardar en `tipografias/`).
 
 ## Logo
-- Archivo(s) en `logos/` (PNG o SVG).
-- Cuándo y dónde aparece:
+- Kevin todavía no tiene logo. No inventar uno ni poner marca de agua.
 
 ## Tono
-- (cómo habla la marca)
+- Pendiente de completar con Kevin.
 
 ## Qué evitar siempre
--
+- Pendiente de completar con Kevin.
