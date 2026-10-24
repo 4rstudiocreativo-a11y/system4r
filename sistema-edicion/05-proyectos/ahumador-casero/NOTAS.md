@@ -9,6 +9,15 @@
 - Clips: `clips/IMG_XXXX.MOV` (no van a git). En la nube se usaron clips de
   relleno con el mismo nombre; en el Mac van los reales.
 
+## Primera sesión en el Mac (hacer en este orden)
+1. Si falta algo, correr `bash sistema-edicion/setup-mac.sh`.
+2. Confirmar que `clips/` tiene los 26 IMG_XXXX.MOV reales.
+3. Transcribir la voz con whisper (`hyperframes transcribe assets/voz.mp3
+   --model small --language es`) y rehacer los tiempos de los subtítulos.
+4. Ver cada clip (fotogramas + duración) y ajustar `data-media-start`
+   al mejor momento según el guion v7.
+5. `hyperframes check`, snapshot, abrir la vista previa para Kevin y renderizar.
+
 ## Pendiente
 - Ajustar `data-media-start` de cada `<video>` al mejor momento de cada clip
   (hoy todos empiezan en 0 salvo las tomas repetidas).
